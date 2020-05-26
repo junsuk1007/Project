@@ -31,6 +31,47 @@
     <link rel="stylesheet" href="/theme/css/owl.carousel.css">
     <link rel="stylesheet" href="/theme/css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+	$(window).on("load", function() {
+
+		//페이지 로딩 완료 후, 멜론 순위가져오기 함수 실행함 
+		getNews();
+	});
+
+	//멜론 순위가져오기
+	function getNews() {
+
+		//Ajax 호출
+		$.ajax({
+			url : "/project/getNews.do",
+			type : "post",
+			dataType : "JSON",
+			contentType : "application/json; charset=UTF-8",
+			success : function(json) {
+
+				var news_rank = "";
+
+				for (var i = 0; i < json.length; i++) {
+					news_rank += ("<h4>"+json[i].seq + "위 | ");
+					/* news_rank += (json[i].collect_time + "수집일 | "); */
+					news_rank += (json[i].title + "</h4><br>");
+
+				}
+
+				$('#news_rank').html(news_rank);
+				
+			}
+		})
+
+	}
+</script>
+<script type="text/javascript">
+	window.onload = function() {
+		setTimeout (function() {
+			scrollTo(0,0);
+		},100);
+	}
+</script>
 </head>
 <body>
 <header id="header" id="home2">
@@ -66,8 +107,9 @@
 ><!-- #header -->
 
 <!-- start banner Area -->
+<div style="background-color:rgba(4, 9, 30, 0.7);">
 <section class="banner-area relativ" id="home">
-    <div class="overlay overlay-bg"></div>
+    <div class="overlay"></div>
     <div class="container">
         <div class="row fullscreen d-flex justify-content-center align-items-center">
             <div class="banner-content col-lg-9 col-md-12 justify-content-center ">
@@ -82,94 +124,26 @@
         </div>
     </div>
 </section>
+</div>
 
 <section class="feature-area section-gap" id="window1">
     <div class="container">
         <div class="row d-flex justify-content-center">
             <div class="col-md-12 pb-40 header-text text-center">
-                <h1 class="pb-10 text-white">오늘의 핫 워드</h1>
-                <p class="text-white">
+                <h1 class="pb-10" style="color: #777;">오늘의 핫 워드</h1>
+                <p class="" style="color: #777;">
                     Who are in extremely love with eco friendly system.
                 </p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <div class="single-feature">
-                    <a href="#" class="title d-flex flex-row align-items-center">
-                        <span class="lnr lnr-user"></span>
-                        <h4>Expert Technicians</h4>
-                    </a>
-                    <p>
-                        Computer users and programmers have become so accustomed to using Windows, even for the
-                        changing.
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="single-feature">
-                    <a href="#" class="title d-flex flex-row align-items-center">
-                        <span class="lnr lnr-license"></span>
-                        <h4>Professional Service</h4>
-                    </a>
-                    <p>
-                        Finding the perfect learning tool for Flash is a daunting task to any novice web developer. One
-                        can find help.
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="single-feature">
-                    <a href="#" class="title d-flex flex-row align-items-center">
-                        <span class="lnr lnr-phone"></span>
-                        <h4>Great Support</h4>
-                    </a>
-                    <p>
-                        While most people enjoy casino ambling, sports betting, lottery and bingo playing for the fun
-                        and excitement.
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="single-feature">
-                    <a href="#" class="title d-flex flex-row align-items-center">
-                        <span class="lnr lnr-rocket"></span>
-                        <h4>Technical Skills</h4>
-                    </a>
-                    <p>
-                        “The moment you think of buying a Web Hosting Plan, you know one thing – So many choices, which
-                        one to choose.
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="single-feature">
-                    <a href="#" class="title d-flex flex-row align-items-center">
-                        <span class="lnr lnr-diamond"></span>
-                        <h4>Highly Recomended</h4>
-                    </a>
-                    <p>
-                        Many conventional colleges and universities are now offering online DVD repair courses, which
-                        are the exact same.
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="single-feature">
-                    <a href="#" class="title d-flex flex-row align-items-center">
-                        <span class="lnr lnr-bubble"></span>
-                        <h4>Positive Reviews</h4>
-                    </a>
-                    <p>
-                        So you have your new digital camera and clicking away to glory anything and everything in sight.
-                        Now you want.
-                    </p>
-                </div>
+        <div class="row text-white">
+            <div id="news_rank">            
             </div>
 
         </div>
     </div>
 </section>
+<hr>
 <!-- End feature Area -->
 
 <!-- Start testimonial Area -->
@@ -178,116 +152,97 @@
         <div class="row d-flex justify-content-center">
             <div class="menu-content pb-70 col-lg-8">
                 <div class="title text-center">
-                    <h1 class="mb-10" style="color: white;">누적 핫 워드</h1>
+                    <h1 class="mb-10" style="color: #777;">누적 핫 워드</h1>
                     <p>Who are in extremely love with eco friendly system.</p>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="active-testimonial-carusel">
-                <div class="single-testimonial item d-flex flex-row">
-                    <div class="thumb">
-                        <img class="img-fluid" src="/theme/img/elements/user1.png" alt="">
-                    </div>
-                    <div class="desc">
-                        <p>
-                            Accessories Here you can find the best computer accessory for your laptop, monitor, printer,
-                            scanner, speaker, projector, hardware.
-                        </p>
-                        <h4 mt-30>Mark Alviro Wiens</h4>
-                        <div class="star">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-testimonial item d-flex flex-row">
-                    <div class="thumb">
-                        <img class="img-fluid" src="/theme/img/elements/user2.png" alt="">
-                    </div>
-                    <div class="desc">
-                        <p>
-                            Hypnosis quit smoking methods maintain caused quite world over the last two decades. There
-                            is a lot of argument pertaining to
-                        </p>
-                        <h4 mt-30>Lina Harrington</h4>
-                        <div class="star">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-testimonial item d-flex flex-row">
-                    <div class="thumb">
-                        <img class="img-fluid" src="/theme/img/elements/user1.png" alt="">
-                    </div>
-                    <div class="desc">
-                        <p>
-                            Accessories Here you can find the best computer accessory for your laptop, monitor, printer,
-                            scanner, speaker, projector, hardware.
-                        </p>
-                        <h4 mt-30>Mark Alviro Wiens</h4>
-                        <div class="star">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-testimonial item d-flex flex-row">
-                    <div class="thumb">
-                        <img class="img-fluid" src="/theme/img/elements/user2.png" alt="">
-                    </div>
-                    <div class="desc">
-                        <p>
-                            Hypnosis quit smoking methods maintain caused quite world over the last two decades. There
-                            is a lot of argument pertaining to
-                        </p>
-                        <h4 mt-30>Lina Harrington</h4>
-                        <div class="star">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </section>
 <!-- End testimonial Area -->
 
 <!-- Start callto-action Area -->
-<section class="callto-action-area pt-120">
+<section class="callto-action-area">
     <div class="container">
         <div class="row justify-content-center">
             <div class="callto-action-wrap col-lg-12 relative section-gap">
-                <div class="content">
-                    <h1>
-                        Looking for a <br>
-                        quality and affordable interior design?
-                    </h1>
-                    <p class="mx-auto">
-                        inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct
-                        standards especially in the workplace.
-                    </p>
-                    <a href="#" class="primary-btn text-uppercase">Request quote now</a>
+                <div class="content" id="cloud" style="display: flex; align-content: center; justify-content: center;">
+                  <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js" type="text/JavaScript"></script>
+    <script>
+        var width = 960,
+            height = 500
+
+        var svg = d3.select("div#cloud").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+        d3.csv("/theme/csv/worddata.csv", function (data) {
+            showCloud(data)
+            setInterval(function(){
+                 showCloud(data)
+            },2000) 
+        });
+        //scale.linear: 선형적인 스케일로 표준화를 시킨다. 
+        //domain: 데이터의 범위, 입력 크기
+        //range: 표시할 범위, 출력 크기 
+        //clamp: domain의 범위를 넘어간 값에 대하여 domain의 최대값으로 고정시킨다.
+        wordScale = d3.scale.linear().domain([0, 100]).range([0, 150]).clamp(true);
+        var keywords = ["자리야", "트레이서", "한조"];
+        var svg = d3.select("svg")
+                    .append("g")
+                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        function showCloud(data) {
+            d3.layout.cloud().size([width, height])
+                //클라우드 레이아웃에 데이터 전달
+                .words(data)
+                .rotate(function (d) {
+                    return d.text.length > 3 ? 0 : 90;
+                })
+                //스케일로 각 단어의 크기를 설정
+                .fontSize(function (d) {
+                    return wordScale(d.frequency);
+                })
+                //클라우드 레이아웃을 초기화 > end이벤트 발생 > 연결된 함수 작동  
+                .on("end", draw)
+                .start();
+
+            function draw(words) { 
+                var cloud = svg.selectAll("text").data(words)
+                //Entering words
+                cloud.enter()
+                    .append("text")
+                    .style("font-family", "overwatch")
+                    .style("fill", function (d) {
+                        return (keywords.indexOf(d.text) > -1 ? "#fbc280" : "#405275");
+                    })
+                    .style("fill-opacity", .5)
+                    .attr("text-anchor", "middle") 
+                    .attr('font-size', 1)
+                    .text(function (d) {
+                        return d.text;
+                    }); 
+                cloud
+                    .transition()
+                    .duration(600)
+                    .style("font-size", function (d) {
+                        return d.size + "px";
+                    })
+                    .attr("transform", function (d) {
+                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                    })
+                    .style("fill-opacity", 1); 
+            }
+        }
+    </script>
                 </div>
             </div>
         </div>
     </div>
 </section>
 <!-- End callto-action Area -->
+<hr>
 
 <!-- start footer Area -->
 <footer class="footer-area section-gap">
