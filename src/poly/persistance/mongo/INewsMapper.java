@@ -26,6 +26,8 @@ public interface INewsMapper {
 	
 	public int insertSortedTitle(List<NewsTitleDTO> pList, String colNm) throws Exception;
 	
+	public int updateSortedTitle(List<NewsTitleDTO> uList, String colNm) throws Exception;
+	
 	
 	/*
 	 * MOngoDB 데이터 가져오기
@@ -40,6 +42,8 @@ public interface INewsMapper {
 	 * @param colNm 가져올 컬렉션 이름
 	 */	
 	public List<NewsDTO> getTitle(String colNm) throws Exception;
+
+	public List<NewsTitleDTO> getRepeat(String colNm2) throws Exception;
 	
 	
 }

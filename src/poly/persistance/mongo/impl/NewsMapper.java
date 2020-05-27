@@ -7,6 +7,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.BasicDBObject;
@@ -133,6 +136,48 @@ public class NewsMapper implements INewsMapper {
 	}
 
 	@Override
+	public int updateSortedTitle(List<NewsTitleDTO> uList, String colNm2) throws Exception {
+
+		log.info(this.getClass().getName() + ".insertTitle start!");
+
+		int res = 0;
+
+		if (uList == null) {
+			uList = new ArrayList<NewsTitleDTO>();
+		}
+
+		/*
+		 * Iterator<NewsTitleDTO> it = uList.iterator();
+		 * 
+		 * while (it.hasNext()) { NewsTitleDTO pDTO = (NewsTitleDTO) it.next();
+		 * 
+		 * if (pDTO == null) { pDTO = new NewsTitleDTO(); }
+		 */
+		for (int i = 0; i < uList.size(); i++) {
+
+			String title = uList.get(i).getTitle();
+			int repeat = uList.get(i).getRepeat();
+			
+			Criteria criteria = new Criteria("title");
+			criteria.is(title);
+			
+			Query query = new Query(criteria);
+			
+			Update update = new Update();
+			
+			update.set("repeat", repeat);			
+
+			mongodb.updateFirst(query, update, colNm2);
+		}
+
+		res = 1;
+
+		log.info(this.getClass().getName() + ".insertSortedTitle End!");
+
+		return res;
+	}
+
+	@Override
 	public List<NewsDTO> getNews(String colNm) throws Exception {
 
 		log.info(this.getClass().getName() + ".getNews Start!");
@@ -175,7 +220,7 @@ public class NewsMapper implements INewsMapper {
 		return rList;
 	}
 
-	//NewsCrol 컬렉션에서 제목 가져오기
+	// NewsCrol 컬렉션에서 제목 가져오기
 	@Override
 	public List<NewsDTO> getTitle(String colNm) throws Exception {
 
@@ -214,6 +259,47 @@ public class NewsMapper implements INewsMapper {
 		log.info(this.getClass().getName() + ".getTitle End!");
 
 		return rList;
+	}
+
+	// SortedTitle 컬렉션에서 제목 가져오기
+	@Override
+	public List<NewsTitleDTO> getRepeat(String colNm2) throws Exception {
+
+		log.info(this.getClass().getName() + ".getTitle Start!");
+
+		// 데이터를 가져올 컬렉션 선택
+		DBCollection rCol = mongodb.getCollection(colNm2);
+
+		// 컬렉션으로부터 전체 데이터 가져오기
+		Iterator<DBObject> cursor = rCol.find();
+
+		// 컬렉션으로부터 전체 데이터 가져온 것을 List 형태로 저장하기 위한 변수 선언
+		List<NewsTitleDTO> nList = new ArrayList<NewsTitleDTO>();
+
+		NewsTitleDTO nDTO = null;
+
+		while (cursor.hasNext()) {
+
+			nDTO = new NewsTitleDTO();
+
+			final DBObject current = cursor.next();
+
+			String title = CmmUtil.nvl((String) current.get("title")); // 제목
+			String StringRepeat = CmmUtil.nvl(String.valueOf(current.get("repeat"))); // 반복횟수
+			int repeat = Integer.parseInt(StringRepeat);
+
+			nDTO.setRepeat(repeat);
+			nDTO.setTitle(title);
+
+			nList.add(nDTO); // List에 데이터 저장
+
+			nDTO = null;
+
+		}
+
+		log.info(this.getClass().getName() + ".getTitle End!");
+
+		return nList;
 	}
 
 }

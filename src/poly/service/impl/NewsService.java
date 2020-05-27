@@ -78,7 +78,11 @@ public class NewsService implements INewsService {
 
 		log.info(this.getClass().getName() + ".createTitleCollection start!");
 
+		// 인서트 하기위해 저장할 리스트
 		List<NewsTitleDTO> pList = new ArrayList<NewsTitleDTO>();
+
+		// 업데이트 하기위해 저장할 리스트
+		List<NewsTitleDTO> uList = new ArrayList<NewsTitleDTO>();
 
 		int res = 0;
 
@@ -89,6 +93,7 @@ public class NewsService implements INewsService {
 
 		String colNm2 = "SortedTitle"; // repeat조회 할 컬렉션명
 
+		// NewsCrol 컬렉션에서 가져온것을 담을 리스트
 		List<NewsDTO> rList = newsMapper.getTitle(colNm);
 
 		if (rList == null) {
@@ -98,19 +103,66 @@ public class NewsService implements INewsService {
 		int rSize = rList.size();
 		for (int i = 0; i < rSize; i++) {
 
+			ArrayList<String> stackedTitle = new ArrayList<>();
+			ArrayList<Integer> stackedRepeat = new ArrayList<>();
+
+			// SortedTitle에서 가져온 것을 담을 리스트
+			List<NewsTitleDTO> nList = newsMapper.getRepeat(colNm2);
+
+			if (nList == null) {
+				nList = new ArrayList<NewsTitleDTO>();
+			} else {
+				int nSize = nList.size();
+				for (int j = 0; j < nSize; j++) {
+
+					String sortedTitle = nList.get(j).getTitle();
+					int repeat = nList.get(j).getRepeat();
+
+					stackedTitle.add(sortedTitle);
+					stackedRepeat.add(repeat);
+				}
+			}
+
 			// NewsCrol에서 가져온 title값을 SortedTitle로 넣어줌
 			String title = rList.get(i).getTitle();
 
-			NewsTitleDTO pDTO = new NewsTitleDTO();
+			String[] strArr = sortTitle(title);
 
-			pDTO.setTitle(title);
-			pDTO.setRepeat(1);
+			for (int k = 0; k < strArr.length; k++) {
 
-			pList.add(pDTO);
+				NewsTitleDTO pDTO = new NewsTitleDTO();
+
+				if (stackedTitle.contains(strArr[k])) {
+
+					NewsTitleDTO uDTO = new NewsTitleDTO();
+					for (int n = 0; n < nList.size(); n++) {
+						String usedTitle = stackedTitle.get(n);
+						int usedRepeat = stackedRepeat.get(n);
+						if (usedTitle.equals(strArr[k])) {
+
+							uDTO.setTitle(strArr[k]);
+							uDTO.setRepeat(usedRepeat + 1);
+							uList.add(uDTO);
+						}
+					}
+
+				} else {
+
+					stackedTitle.add(strArr[k]);
+					stackedRepeat.add(1);
+
+					pDTO.setTitle(strArr[k]);
+					pDTO.setRepeat(1);
+
+					pList.add(pDTO);
+
+				}
+			}
 
 		}
 		// 컬렉션을 없애지 않을거기 때문에 주석
 		/* newsMapper.createTitleCollection(colNm2); */
+		newsMapper.updateSortedTitle(uList, colNm2);
 
 		newsMapper.insertSortedTitle(pList, colNm2);
 
@@ -118,6 +170,54 @@ public class NewsService implements INewsService {
 
 		return res;
 
+	}
+
+	public String[] sortTitle(String title) {
+
+		System.out.println("original str :" + title);
+
+		title = title.replaceAll("[^\\uAC00-\\uD7A3xfe0-9a-zA-Z\\\\s]", " ");
+
+		/* System.out.println("1st str :" + title); */
+
+		title = title.replaceAll("\\s{2,}", " ");
+
+		/* System.out.println("2nd str :" + title); */
+
+		title = title.trim();
+
+		/* System.out.println("3nd str :" + title); */
+
+		String[] strArr = title.split(" ");
+
+		/* System.out.println("strArr.length :" + strArr.length); */
+
+		// 마지막 글자 없애는 함수
+		// System.out.println("네번째 배열 조사삭제:" + strArr[3].substring(0, strArr[3].length()
+		// - 1));
+
+		for (int i = 0; i < strArr.length; i++) {
+			// System.out.println("strArr[" + i + "]번째 :" + strArr[i]);
+
+			String checkstr = strArr[i].substring(strArr[i].length() - 1);
+
+			if ((checkstr.equals("은")) || (checkstr.equals("는")) || (checkstr.equals("이")) || (checkstr.equals("가"))
+					|| (checkstr.equals("을")) || (checkstr.equals("를")) || (checkstr.equals("와"))
+					|| (checkstr.equals("랑")) || (checkstr.equals("로")) || (checkstr.equals("의"))
+					|| (checkstr.equals("에")) || (checkstr.equals("과"))) {
+
+				strArr[i] = strArr[i].substring(0, strArr[i].length() - 1);
+
+				// System.out.println("바뀐 strArr[" + i + "]번째 :" + strArr[i]);
+			}
+
+		}
+
+		for (int k = 0; k < strArr.length; k++) {
+			// System.out.println("최종 strArr[" + k + "]번째 :" + strArr[k]);
+		}
+
+		return strArr;
 	}
 
 	@Override

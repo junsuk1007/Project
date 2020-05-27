@@ -11,19 +11,23 @@ import poly.service.INewsService;
 
 @Component
 @Service("SchedulerService")
-public class SchedulerService implements ISchedulerService{
-	
+public class SchedulerService implements ISchedulerService {
+
 	private Logger log = Logger.getLogger(this.getClass());
-	
+
 	@Resource(name = "NewsService")
 	private INewsService newsService;
-	
+
 	@Scheduled(cron = "0 0 0/6 * * ?")
 	@Override
 	public void sTest() throws Exception {
-		
+
 		log.info(this.getClass().getName() + "크롤링 스케쥴러 작동");
-		 newsService.CollectNews(); 
+		newsService.CollectNews();
+
+		log.info(this.getClass().getName() + "제목 분류 스케쥴러 작동");
+		newsService.createTitleCollection();
 	}
+	
 
 }
