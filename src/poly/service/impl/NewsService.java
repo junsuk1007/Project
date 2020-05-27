@@ -140,6 +140,8 @@ public class NewsService implements INewsService {
 						int usedRepeat = stackedRepeat.get(n);
 						if (usedTitle.equals(strArr[k])) {
 
+							stackedTitle.set(n, strArr[k]);
+							stackedRepeat.set(n, usedRepeat+1);
 							uDTO.setTitle(strArr[k]);
 							uDTO.setRepeat(usedRepeat + 1);
 							uList.add(uDTO);
@@ -199,6 +201,7 @@ public class NewsService implements INewsService {
 		for (int i = 0; i < strArr.length; i++) {
 			// System.out.println("strArr[" + i + "]번째 :" + strArr[i]);
 
+			// 마지막 글자 추출
 			String checkstr = strArr[i].substring(strArr[i].length() - 1);
 
 			if ((checkstr.equals("은")) || (checkstr.equals("는")) || (checkstr.equals("이")) || (checkstr.equals("가"))

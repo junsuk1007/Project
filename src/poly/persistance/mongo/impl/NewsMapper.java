@@ -157,16 +157,17 @@ public class NewsMapper implements INewsMapper {
 
 			String title = uList.get(i).getTitle();
 			int repeat = uList.get(i).getRepeat();
-			
+
 			Criteria criteria = new Criteria("title");
 			criteria.is(title);
-			
-			Query query = new Query(criteria);
-			
-			Update update = new Update();
-			
-			update.set("repeat", repeat);			
 
+			Query query = new Query(criteria);
+
+			Update update = new Update();
+
+			update.set("repeat", repeat);
+
+			// (찾을 컬럼,바꿀 컬럼,컬렉션 명)
 			mongodb.updateFirst(query, update, colNm2);
 		}
 
