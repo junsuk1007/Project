@@ -1,6 +1,8 @@
 package poly.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -82,7 +84,7 @@ public class NewsService implements INewsService {
 		List<NewsTitleDTO> pList = new ArrayList<NewsTitleDTO>();
 
 		// 업데이트 하기위해 저장할 리스트
-		List<NewsTitleDTO> uList = new ArrayList<NewsTitleDTO>();
+		// List<NewsTitleDTO> uList = new ArrayList<NewsTitleDTO>();
 
 		int res = 0;
 
@@ -101,72 +103,129 @@ public class NewsService implements INewsService {
 		}
 
 		int rSize = rList.size();
-		for (int i = 0; i < rSize; i++) {
 
-			ArrayList<String> stackedTitle = new ArrayList<>();
-			ArrayList<Integer> stackedRepeat = new ArrayList<>();
+		ArrayList<String> stackedTitle = new ArrayList<>();
 
-			// SortedTitle에서 가져온 것을 담을 리스트
-			List<NewsTitleDTO> nList = newsMapper.getRepeat(colNm2);
+		ArrayList<String> dbstackedTitle = new ArrayList<>();
 
-			if (nList == null) {
-				nList = new ArrayList<NewsTitleDTO>();
-			} else {
-				int nSize = nList.size();
-				for (int j = 0; j < nSize; j++) {
+		// SortedTitle에서 가져온 것을 담을 리스트
+		List<NewsTitleDTO> nList = newsMapper.getRepeat(colNm2);
+		int nSize = nList.size();
 
-					String sortedTitle = nList.get(j).getTitle();
-					int repeat = nList.get(j).getRepeat();
+		// 디비 값이 없을때
+		if (nSize == 0) {
 
-					stackedTitle.add(sortedTitle);
-					stackedRepeat.add(repeat);
+			HashMap<String, Integer> stacked_count = new HashMap<String, Integer>();
+
+			for (int i = 0; i < rSize; i++) {
+
+				if (nList == null) {
+					nList = new ArrayList<NewsTitleDTO>();
+				}
+
+				// NewsCrol에서 가져온 title값을 SortedTitle로 넣어줌
+				String title = rList.get(i).getTitle();
+
+				String[] strArr = sortTitle(title);
+
+				for (int k = 0; k < strArr.length; k++) {
+
+					stackedTitle.add(strArr[k]);
+
+				}
+
+				for (int n = 0; n < stackedTitle.size(); n++) {
+					if (stacked_count.containsKey(stackedTitle.get(n))) {
+						stacked_count.put(stackedTitle.get(n), stacked_count.get(stackedTitle.get(n)) + 1);
+					} else {
+						stacked_count.put(stackedTitle.get(n), 1);
+					}
+				}
+				stackedTitle = new ArrayList<>();
+
+			}
+			Iterator<String> iterator = stacked_count.keySet().iterator();
+			while (iterator.hasNext()) {
+				NewsTitleDTO pDTO = new NewsTitleDTO();
+				String key = iterator.next();
+				int value = stacked_count.get(key);
+
+				pDTO.setTitle(key);
+				pDTO.setRepeat(value);
+				pList.add(pDTO);
+
+			}
+
+			// 디비 값이 있을때
+		} else {
+			HashMap<String, Integer> stacked_count = new HashMap<String, Integer>();
+
+			for (int k = 0; k < nSize; k++) {
+				if (nList.get(k).getRepeat() != 1) {
+					for (int a = 0; a < nList.get(k).getRepeat(); a++) {
+						dbstackedTitle.add(nList.get(k).getTitle());
+					}
+				} else {
+					dbstackedTitle.add(nList.get(k).getTitle());
 				}
 			}
 
-			// NewsCrol에서 가져온 title값을 SortedTitle로 넣어줌
-			String title = rList.get(i).getTitle();
-
-			String[] strArr = sortTitle(title);
-
-			for (int k = 0; k < strArr.length; k++) {
-
-				NewsTitleDTO pDTO = new NewsTitleDTO();
-
-				if (stackedTitle.contains(strArr[k])) {
-
-					NewsTitleDTO uDTO = new NewsTitleDTO();
-					for (int n = 0; n < nList.size(); n++) {
-						String usedTitle = stackedTitle.get(n);
-						int usedRepeat = stackedRepeat.get(n);
-						if (usedTitle.equals(strArr[k])) {
-
-							stackedTitle.set(n, strArr[k]);
-							stackedRepeat.set(n, usedRepeat+1);
-							uDTO.setTitle(strArr[k]);
-							uDTO.setRepeat(usedRepeat + 1);
-							uList.add(uDTO);
-						}
-					}
-
+			for (int n = 0; n < dbstackedTitle.size(); n++) {
+				if (stacked_count.containsKey(dbstackedTitle.get(n))) {
+					stacked_count.put(dbstackedTitle.get(n), stacked_count.get(dbstackedTitle.get(n)) + 1);
 				} else {
+					stacked_count.put(dbstackedTitle.get(n), 1);
+				}
+			}
+			dbstackedTitle = new ArrayList<>();
+
+			for (int i = 0; i < rSize; i++) {
+
+				if (nList == null) {
+					nList = new ArrayList<NewsTitleDTO>();
+				}
+
+				// NewsCrol에서 가져온 title값을 SortedTitle로 넣어줌
+				String title = rList.get(i).getTitle();
+
+				String[] strArr = sortTitle(title);
+
+				for (int k = 0; k < strArr.length; k++) {
 
 					stackedTitle.add(strArr[k]);
-					stackedRepeat.add(1);
-
-					pDTO.setTitle(strArr[k]);
-					pDTO.setRepeat(1);
-
-					pList.add(pDTO);
 
 				}
+
+				for (int n = 0; n < stackedTitle.size(); n++) {
+					if (stacked_count.containsKey(stackedTitle.get(n))) {
+						stacked_count.put(stackedTitle.get(n), stacked_count.get(stackedTitle.get(n)) + 1);
+					} else {
+						stacked_count.put(stackedTitle.get(n), 1);
+					}
+				}
+				stackedTitle = new ArrayList<>();
+
+			}
+			Iterator<String> iterator = stacked_count.keySet().iterator();
+			while (iterator.hasNext()) {
+				NewsTitleDTO pDTO = new NewsTitleDTO();
+				String key = iterator.next();
+				int value = stacked_count.get(key);
+
+				pDTO.setTitle(key);
+				pDTO.setRepeat(value);
+				pList.add(pDTO);
+
 			}
 
 		}
-		// 컬렉션을 없애지 않을거기 때문에 주석
-		/* newsMapper.createTitleCollection(colNm2); */
-		newsMapper.updateSortedTitle(uList, colNm2);
+
+		// 컬렉션을 없애지 않을거면 때문에 주석
+		newsMapper.createTitleCollection(colNm2);
 
 		newsMapper.insertSortedTitle(pList, colNm2);
+
+		// newsMapper.updateSortedTitle(uList, colNm2);
 
 		log.info(this.getClass().getName() + ".createTitleCollection end!");
 
