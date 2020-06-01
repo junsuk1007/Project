@@ -313,7 +313,7 @@ public class NewsMapper implements INewsMapper {
 		DBCollection rCol = mongodb.getCollection(colNm2);
 
 		// 컬렉션으로부터 repeat이 높은 순서대로 60개만 가져옴
-		Iterator<DBObject> cursor = rCol.find().sort(new BasicDBObject("repeat",-1)).limit(60);
+		Iterator<DBObject> cursor = rCol.find().sort(new BasicDBObject("repeat",-1)).limit(150);
 
 		// 컬렉션으로부터 전체 데이터 가져온 것을 List 형태로 저장하기 위한 변수 선언
 		List<NewsTitleDTO> nList = new ArrayList<NewsTitleDTO>();

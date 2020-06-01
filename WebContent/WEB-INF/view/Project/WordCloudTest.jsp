@@ -1,80 +1,104 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <html>
 
 <head>
-    <meta charset="utf-8" />
+<meta charset="utf-8" />
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script
+	src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"
+	type="text/JavaScript">
+	</script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+.legend {
+	border: 1px solid #555555;
+	border-radius: 5px 5px 5px 5px;
+	font-size: 0.8em;
+	margin: 10px;
+	padding: 8px 8px 8px 8px;
+}
+
+.bld {
+	font-weight: bold;
+}
+</style>
+
 </head>
 <body>
-    
-    <script src="https://d3js.org/d3.v3.min.js"></script>
-    <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js" type="text/JavaScript"></script>
-    <script>
-        var width = 960,
-            height = 500
 
-        var svg = d3.select("body").append("svg")
-            .attr("width", width)
-            .attr("height", height);
-        d3.csv("/theme/csv/worddata.csv", function (data) {
-            showCloud(data)
-            setInterval(function(){
-                 showCloud(data)
-            },2000) 
-        });
-        //scale.linear: 선형적인 스케일로 표준화를 시킨다. 
-        //domain: 데이터의 범위, 입력 크기
-        //range: 표시할 범위, 출력 크기 
-        //clamp: domain의 범위를 넘어간 값에 대하여 domain의 최대값으로 고정시킨다.
-        wordScale = d3.scale.linear().domain([0, 100]).range([0, 150]).clamp(true);
-        var keywords = ["자리야", "트레이서", "한조"]
-        var svg = d3.select("svg")
-                    .append("g")
-                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
 
-        function showCloud(data) {
-            d3.layout.cloud().size([width, height])
-                //클라우드 레이아웃에 데이터 전달
-                .words(data)
-                .rotate(function (d) {
-                    return d.text.length > 3 ? 0 : 90;
-                })
-                //스케일로 각 단어의 크기를 설정
-                .fontSize(function (d) {
-                    return wordScale(d.frequency);
-                })
-                //클라우드 레이아웃을 초기화 > end이벤트 발생 > 연결된 함수 작동  
-                .on("end", draw)
-                .start();
 
-            function draw(words) { 
-                var cloud = svg.selectAll("text").data(words)
-                //Entering words
-                cloud.enter()
-                    .append("text")
-                    .style("font-family", "overwatch")
-                    .style("fill", function (d) {
-                        return (keywords.indexOf(d.text) > -1 ? "#fbc280" : "#405275");
-                    })
-                    .style("fill-opacity", .5)
-                    .attr("text-anchor", "middle") 
-                    .attr('font-size', 1)
-                    .text(function (d) {
-                        return d.text;
-                    }); 
-                cloud
-                    .transition()
-                    .duration(600)
-                    .style("font-size", function (d) {
-                        return d.size + "px";
-                    })
-                    .attr("transform", function (d) {
-                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                    })
-                    .style("fill-opacity", 1); 
-            }
-        }
-    </script>
+	<div id="cloud" align="center"></div>
+	<div style="text-align: -webkit-center;">
+		<div class="legend" align="center" style="width: 50%;">
+			빈도수가 높은 단어는 크지만 흐립니다. 빈도수가 낮은 단어는 작지만 진합니다.<br> Commonly used
+			words are larger and slightly faded in color. Less common words are
+			smaller and darker.
+		</div>
+	</div>
 </body>
+<script>
+		var weight = 3,   // change me
+		width = 1200,
+		height = 600;
+		
+		$.get({
+			url : "/project/getTop50.do"
+		})
+		.done(function(json) {
+			console.log(json);
+			var fill = d3.scale.category20();
+			
+			const group = [];
+			json.forEach(function(d) {
+				const data = new Object();
+				data.text = d.title;
+				data.size = d.repeat;
+				group.push(data);
+			})
+			
+			d3.layout.cloud().size([width, height]).words(group)
+		.rotate(function(d){return 0;})
+		.font("Impact")
+		.padding(1)
+		.fontSize(function(d) { return d.size; })
+		.text(function(d) { 
+			console.log("바이바이");
+			return d.text; 
+		})
+		.on("end", draw)
+		.start();
+		
+		
+		function draw(words) {
+			 d3.select("#cloud").append("svg")
+			.attr("width", width)
+            .attr("height", height)
+			.attr("class", "wordcloud")
+			.append("g")
+			.attr("transform", "translate(" + width/2 + "," + height/2 + ")")
+			.selectAll("text")
+			.data(group)
+			.enter().append("text")
+            .style("font-size", function(d) { 
+            	console.log("하이하이");
+            	return d.size*weight + "px"; })
+            .style("font-family", "Impact")
+            .style("fill", function(d, i) { return fill(i); })
+            .attr("text-anchor", "middle")
+            .attr("transform", function(d) {
+              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+          .text(function(d) { return d.text; });
+		}
+		})
+		
+		
+		
+		
+	
+	</script>
 
 </html>

@@ -37,6 +37,12 @@ public class NewsController {
 
 		return "/Project/WordCloudTest";
 	}
+	@RequestMapping(value = "WordCloud2")
+	public String WordCloud2() {
+		log.info(this.getClass());
+
+		return "/Project/WordCloud2";
+	}
 
 	@RequestMapping(value = "project/collectNews")
 	@ResponseBody
@@ -103,6 +109,19 @@ public class NewsController {
 			log.info(this.getClass().getName() + " .TestGetNews End!");
 
 			return nList;
+		}
+		@RequestMapping(value = "makecsv")
+		@ResponseBody
+		public String makecsv(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+			log.info(this.getClass().getName() + ".makecsv start!");
+
+			newsService.makeCsv();
+			
+			log.info(this.getClass().getName() + ".makecsv end!");		
+			
+
+			return "success";
 		}
 
 }

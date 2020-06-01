@@ -1,5 +1,12 @@
 package poly.service.impl;
 
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -327,4 +334,43 @@ public class NewsService implements INewsService {
 		return nList;
 	}
 
+	@Override
+	public void makeCsv() throws Exception {
+
+		String colNm2 = "SortedTitle";
+		List<NewsTitleDTO> nList = newsMapper.getTop50(colNm2);
+		for (int i = 0; i < nList.size(); i++) {
+			if ((nList.get(i).getTitle().length() == 1) || ((nList.get(i).getTitle() == " "))
+					|| ((nList.get(i).getTitle() == ""))) {
+				nList.remove(i);
+				continue;
+			}
+		}
+
+		String filePath = "C:\\workspace\\SpringPRJ\\WebContent\\theme\\\\csv\\";
+		String fileName = "wordcloud.csv";
+		String makePath = filePath + File.separator + fileName;
+		String text = "word,freq\n";
+		for (int i = 0; i < nList.size(); i++) {
+			text = text + nList.get(i).getTitle();
+			text = text + ',';
+			text = text + nList.get(i).getRepeat();
+			text = text + "\n";
+		}
+
+		File folder = new File(filePath);
+		if (!folder.exists()) {
+			folder.mkdirs();			
+		}
+		try {
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(makePath), "UTF-8"));
+			bw.write(text);
+			bw.close();
+		} catch (IOException e) {
+			throw e;
+		}
+
+	}
+
+	
 }

@@ -35,6 +35,11 @@
 <link rel="stylesheet" href="/theme/css/main.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="http://d3js.org/d3.v4.min.js"></script>
+<script
+	src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"
+	type="text/JavaScript">
+	</script>
 <script type="text/javascript">
 	$(window).on("load", function() {
 
@@ -92,8 +97,7 @@
 			<div class="row align-items-center justify-content-between d-flex">
 				<div id="logo">
 					<a href="" style="color: white; font-size: 20px;"><i>FROM
-							WAY</i><br>
-					<i>DOWNTOWN</i></a>
+							WAY</i><br> <i>DOWNTOWN</i></a>
 				</div>
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
@@ -141,8 +145,8 @@
 						eco friendly system.</p>
 				</div>
 			</div>
-			<div class="row text-white">
-				<div id="news_rank"></div>
+			<div class="row text-white" style="align-items: center;justify-content: center;">
+				<div id="news_rank" style="text-align:center;"></div>
 
 			</div>
 		</div>
@@ -154,7 +158,7 @@
 	<section class="testimonial-area pt-120" id="window2">
 		<div class="container">
 			<div class="row d-flex justify-content-center">
-				<div class="menu-content pb-70 col-lg-8">
+				<div class="menu-content col-lg-8">
 					<div class="title text-center">
 						<h1 class="mb-10" style="color: #777;">누적 핫 워드</h1>
 						<p>Who are in extremely love with eco friendly system.</p>
@@ -170,79 +174,51 @@
 	<section class="callto-action-area">
 		<div class="container">
 			<div class="row justify-content-center">
-				<div class="callto-action-wrap col-lg-12 relative section-gap">
+				<div class="callto-action-wrap col-lg-12 relative">
 					<div class="content" id="cloud"
 						style="display: flex; align-content: center; justify-content: center;">
-						<script src="https://d3js.org/d3.v3.min.js"></script>
-						<script
-							src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"
-							type="text/JavaScript"></script>
-						<script>
-        var width = 960,
-            height = 500
 
-        var svg = d3.select("div#cloud").append("svg")
-            .attr("width", width)
-            .attr("height", height);
-        d3.csv("/theme/csv/worddata.csv", function (data) {
-            showCloud(data)
-            setInterval(function(){
-                 showCloud(data)
-            },2000) 
-        });
-        //scale.linear: 선형적인 스케일로 표준화를 시킨다. 
-        //domain: 데이터의 범위, 입력 크기
-        //range: 표시할 범위, 출력 크기 
-        //clamp: domain의 범위를 넘어간 값에 대하여 domain의 최대값으로 고정시킨다.
-        wordScale = d3.scale.linear().domain([0, 100]).range([0, 150]).clamp(true);
-        var keywords = ["자리야", "트레이서", "한조"];
-        var svg = d3.select("svg")
-                    .append("g")
-                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+						<script type="text/javascript">
+    var weight = 3,   // change me
+        width = 960,
+        height = 500;
 
-        function showCloud(data) {
-            d3.layout.cloud().size([width, height])
-                //클라우드 레이아웃에 데이터 전달
-                .words(data)
-                .rotate(function (d) {
-                    return d.text.length > 3 ? 0 : 90;
-                })
-                //스케일로 각 단어의 크기를 설정
-                .fontSize(function (d) {
-                    return wordScale(d.frequency);
-                })
-                //클라우드 레이아웃을 초기화 > end이벤트 발생 > 연결된 함수 작동  
-                .on("end", draw)
-                .start();
-
-            function draw(words) { 
-                var cloud = svg.selectAll("text").data(words)
-                //Entering words
-                cloud.enter()
-                    .append("text")
-                    .style("font-family", "overwatch")
-                    .style("fill", function (d) {
-                        return (keywords.indexOf(d.text) > -1 ? "#fbc280" : "#405275");
-                    })
-                    .style("fill-opacity", .5)
-                    .attr("text-anchor", "middle") 
-                    .attr('font-size', 1)
-                    .text(function (d) {
-                        return d.text;
-                    }); 
-                cloud
-                    .transition()
-                    .duration(600)
-                    .style("font-size", function (d) {
-                        return d.size + "px";
-                    })
-                    .attr("transform", function (d) {
-                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                    })
-                    .style("fill-opacity", 1); 
-            }
+    var fill = d3.scaleOrdinal(d3.schemeCategory20);
+    d3.csv("/theme/csv/wordcloud.csv", function(d) {
+        return {
+          text: d.word,
+          size: +d.freq*weight
         }
-    </script>
+      },
+      function(data) {
+        d3.layout.cloud().size([width, height]).words(data)
+          //.rotate(function() { return ~~(Math.random() * 2) * 90; })
+          .rotate(0)
+          .font("Impact")
+          .fontSize(function(d) { return d.size; })
+          .on("end", draw)
+          .start();
+
+        function draw(words) {
+          d3.select("#cloud").append("svg")
+              .attr("width", width)
+              .attr("height", height)
+            .append("g")
+              .attr("transform", "translate(" + width/2 + "," + height/2 + ")")
+            .selectAll("text")
+              .data(words)
+            .enter().append("text")
+              .style("font-size", function(d) { return d.size + "px"; })
+              .style("font-family", "Impact")
+              .style("fill", function(d, i) { return fill(i); })
+              .attr("text-anchor", "middle")
+              .attr("transform", function(d) {
+                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+              })
+            .text(function(d) { return d.text; });
+        }
+      });
+  </script>
 					</div>
 				</div>
 			</div>

@@ -18,4 +18,6 @@ public interface INewsService {
 	
 	public List<NewsTitleDTO> getTop50() throws Exception;
 	
+	public void makeCsv() throws Exception;	
+		
 }
