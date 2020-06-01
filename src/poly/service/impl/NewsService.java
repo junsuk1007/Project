@@ -301,4 +301,30 @@ public class NewsService implements INewsService {
 		return rList;
 	}
 
+	@Override
+	public List<NewsTitleDTO> getTop50() throws Exception {
+
+		log.info(this.getClass().getName() + ".getTop50 Start!");
+
+		// 조회할 컬렉션 이름
+		String colNm2 = "SortedTitle";
+
+		List<NewsTitleDTO> nList = newsMapper.getTop50(colNm2);
+
+		if (nList == null) {
+			nList = new ArrayList<NewsTitleDTO>();
+		}
+		for (int i = 0; i < nList.size(); i++) {
+			if ((nList.get(i).getTitle().length() == 1) || ((nList.get(i).getTitle() == " "))
+					|| ((nList.get(i).getTitle() == ""))) {
+				nList.remove(i);
+				continue;
+			}
+		}
+
+		log.info(this.getClass().getName() + ".getTop50 End!");
+
+		return nList;
+	}
+
 }

@@ -302,5 +302,48 @@ public class NewsMapper implements INewsMapper {
 
 		return nList;
 	}
+	
+	//SortedTitle에서 탑 50 가져오기
+	@Override
+	public List<NewsTitleDTO> getTop50(String colNm2) throws Exception {
+
+		log.info(this.getClass().getName() + ".getTitle Start!");
+
+		// 데이터를 가져올 컬렉션 선택
+		DBCollection rCol = mongodb.getCollection(colNm2);
+
+		// 컬렉션으로부터 repeat이 높은 순서대로 60개만 가져옴
+		Iterator<DBObject> cursor = rCol.find().sort(new BasicDBObject("repeat",-1)).limit(60);
+
+		// 컬렉션으로부터 전체 데이터 가져온 것을 List 형태로 저장하기 위한 변수 선언
+		List<NewsTitleDTO> nList = new ArrayList<NewsTitleDTO>();
+
+		NewsTitleDTO nDTO = null;
+
+		while (cursor.hasNext()) {
+
+			nDTO = new NewsTitleDTO();
+
+			final DBObject current = cursor.next();
+
+			String title = CmmUtil.nvl((String) current.get("title")); // 제목
+			String StringRepeat = CmmUtil.nvl(String.valueOf(current.get("repeat"))); // 반복횟수
+			int repeat = Integer.parseInt(StringRepeat);
+
+			nDTO.setRepeat(repeat);
+			nDTO.setTitle(title);
+
+			nList.add(nDTO); // List에 데이터 저장
+
+			nDTO = null;
+
+		}
+
+		log.info(this.getClass().getName() + ".getTitle End!");
+
+		return nList;
+	}
+	
+	
 
 }

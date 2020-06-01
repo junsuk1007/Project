@@ -3,6 +3,7 @@ package poly.service;
 import java.util.List;
 
 import poly.dto.NewsDTO;
+import poly.dto.NewsTitleDTO;
 
 public interface INewsService {
 
@@ -13,7 +14,8 @@ public interface INewsService {
 	public int createTitleCollection() throws Exception;
 
 	// MongoDB 뉴스기사 데이터 가져오기
-
 	public List<NewsDTO> getNews() throws Exception;
+	
+	public List<NewsTitleDTO> getTop50() throws Exception;
 	
 }

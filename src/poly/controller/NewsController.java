@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import poly.dto.NewsDTO;
+import poly.dto.NewsTitleDTO;
 import poly.service.INewsService;
 
 @Controller
@@ -86,5 +87,22 @@ public class NewsController {
 
 		return rList;
 	}
+	
+	// 뉴스 데이터 가져오기
+		@RequestMapping(value = "project/getTop50")
+		@ResponseBody
+		public List<NewsTitleDTO> getTop50(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+			log.info(this.getClass().getName() + " .TestGetNews Start!");
+
+			List<NewsTitleDTO> nList = newsService.getTop50();
+
+			if (nList == null) {
+				nList = new ArrayList<NewsTitleDTO>();
+			}
+			log.info(this.getClass().getName() + " .TestGetNews End!");
+
+			return nList;
+		}
 
 }

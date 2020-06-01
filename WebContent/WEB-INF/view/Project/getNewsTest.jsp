@@ -8,15 +8,15 @@
 	$(window).on("load", function() {
 
 		//페이지 로딩 완료 후, 멜론 순위가져오기 함수 실행함 
-		getNews();
+		getTop50();
 	});
 
 	//멜론 순위가져오기
-	function getNews() {
+	function getTop50() {
 
 		//Ajax 호출
 		$.ajax({
-			url : "/project/getNews.do",
+			url : "/project/getTop50.do",
 			type : "post",
 			dataType : "JSON",
 			contentType : "application/json; charset=UTF-8",
@@ -25,9 +25,9 @@
 				var news_rank = "";
 
 				for (var i = 0; i < json.length; i++) {
-					news_rank += (json[i].seq + "위 | ");
+					news_rank += ((i+1)+"위 "+json[i].title+" : ");
 					/* news_rank += (json[i].collect_time + "수집일 | "); */
-					news_rank += (json[i].title + "<br>");
+					news_rank += (json[i].repeat + "회 <br>");
 
 				}
 
