@@ -27,16 +27,10 @@ public class SchedulerService implements ISchedulerService {
 
 		log.info(this.getClass().getName() + "제목 분류 스케쥴러 작동");
 		newsService.createTitleCollection();
-	}
-
-	@Scheduled(cron = "0 0 12 ? * WED")
-	@Override
-	public void sTest2() throws Exception {
 		
 		log.info(this.getClass().getName() + "csv파일 생성 스케쥴러 작동");
 		newsService.makeCsv();
-		
 	}
-	
+
 
 }

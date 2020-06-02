@@ -176,7 +176,7 @@
 			<div class="row justify-content-center">
 				<div class="callto-action-wrap col-lg-12 relative">
 					<div class="content" id="cloud"
-						style="display: flex; align-content: center; justify-content: center;">
+						style="display: grid; align-content: center; justify-content: center;">
 
 						<script type="text/javascript">
     var weight = 3,   // change me
