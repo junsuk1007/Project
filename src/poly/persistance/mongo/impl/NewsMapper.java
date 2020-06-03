@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -302,8 +303,8 @@ public class NewsMapper implements INewsMapper {
 
 		return nList;
 	}
-	
-	//SortedTitle에서 탑 50 가져오기
+
+	// SortedTitle에서 탑 50 가져오기
 	@Override
 	public List<NewsTitleDTO> getTop50(String colNm2) throws Exception {
 
@@ -313,7 +314,7 @@ public class NewsMapper implements INewsMapper {
 		DBCollection rCol = mongodb.getCollection(colNm2);
 
 		// 컬렉션으로부터 repeat이 높은 순서대로 60개만 가져옴
-		Iterator<DBObject> cursor = rCol.find().sort(new BasicDBObject("repeat",-1)).limit(150);
+		Iterator<DBObject> cursor = rCol.find().sort(new BasicDBObject("repeat", -1)).limit(150);
 
 		// 컬렉션으로부터 전체 데이터 가져온 것을 List 형태로 저장하기 위한 변수 선언
 		List<NewsTitleDTO> nList = new ArrayList<NewsTitleDTO>();
@@ -343,7 +344,25 @@ public class NewsMapper implements INewsMapper {
 
 		return nList;
 	}
-	
-	
+
+	@Override
+	public int titleDelete(NewsTitleDTO nDTO, String colNm2) throws Exception {
+
+		int res = 0;
+
+		String title = CmmUtil.nvl(nDTO.getTitle());	
+		
+		DBObject query = new BasicDBObject()
+				.append("title", title);
+		log.info("query:" + query);
+		
+		DBObject queryRes = mongodb.getCollection(colNm2).find(query).one();
+		
+		mongodb.getCollection(colNm2).remove(queryRes);
+
+		res = 1;
+
+		return res;
+	}
 
 }

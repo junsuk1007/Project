@@ -46,6 +46,8 @@ public interface INewsMapper {
 	public List<NewsTitleDTO> getRepeat(String colNm2) throws Exception;
 	
 	public List<NewsTitleDTO> getTop50(String colNm2) throws Exception;
+
+	public int titleDelete(NewsTitleDTO nDTO, String colNm2) throws Exception;
 	
 	
 }

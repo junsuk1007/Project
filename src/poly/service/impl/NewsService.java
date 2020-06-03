@@ -1,6 +1,5 @@
 package poly.service.impl;
 
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -360,7 +359,7 @@ public class NewsService implements INewsService {
 
 		File folder = new File(filePath);
 		if (!folder.exists()) {
-			folder.mkdirs();			
+			folder.mkdirs();
 		}
 		try {
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(makePath), "UTF-8"));
@@ -372,5 +371,16 @@ public class NewsService implements INewsService {
 
 	}
 
-	
+	@Override
+	public int titleDelete(NewsTitleDTO nDTO) throws Exception {
+		
+		// 조회할 컬렉션 이름
+		String colNm2 = "SortedTitle";
+		
+		int res = newsMapper.titleDelete(nDTO,colNm2);
+		
+		return res;
+
+	}
+
 }

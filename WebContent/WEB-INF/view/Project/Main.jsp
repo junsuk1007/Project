@@ -1,5 +1,18 @@
+<%@page import="poly.util.CmmUtil"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="poly.dto.NewsTitleDTO"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%
+	List<NewsTitleDTO> nList = (List<NewsTitleDTO>)request.getAttribute("nList");
+	
+	if(nList == null){
+		nList = new ArrayList<>();
+	}
+	NewsTitleDTO nDTO = new NewsTitleDTO();
+	%>
+	
 <!doctype html>
 <html>
 <head>
@@ -226,6 +239,35 @@
 	</section>
 	<!-- End callto-action Area -->
 	<hr>
+				<%
+				if(session.getAttribute("SS_ADMIN_CODE")!=null){
+				%>
+	<section class="feature-area section-gap" id="window3">
+		<div class="container" style="text-align: -webkit-center;">
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-12 pb-40 header-text text-center">
+					<h1 class="pb-10" style="color: #777;">핫 워드 삭제</h1>
+					<p class="" style="color: #777;">부적절한 단어를 삭제합니다.</p>
+				</div>
+			</div>
+			<div class="row" style="align-items: center;justify-content: center; display:grid;width:800px; height:400px;overflow:scroll;">				
+				<div class="row" style="width:750px;">
+                              <div class="col-lg-2 col-md-2 col-sm-2  lg-9-st">단어</div>
+                              <div class="col-lg-2 col-md-2 col-sm-2 lg-9-st">반복 횟수</div>
+                              <div class="col-lg-2 col-md-2 col-sm-2 lg-9-st"></div>                                                         
+                           </div> 
+                           <%for(NewsTitleDTO rDTO : nList){ %>
+                           <div class="row" style="width:750px;">
+                              <div class="col-lg-2 col-md-2 col-sm-2  lg-9-st"><%=CmmUtil.nvl(rDTO.getTitle()) %></div>
+                              <div class="col-lg-2 col-md-2 col-sm-2 lg-9-st"><%=rDTO.getRepeat()%></div>
+                              <div class="col-lg-2 col-md-2 col-sm-2 lg-9-st"><a href="/project/titleDelete.do?title=<%=CmmUtil.nvl(rDTO.getTitle())%>">삭제</a></div>                                                         
+                           </div> 
+                           <%} %>  
+				</div>			
+		</div>
+	</section>
+	<hr>
+	<%} %>
 
 	<!-- start footer Area -->
 	<footer class="footer-area section-gap">
@@ -248,30 +290,41 @@
 						</p>
 					</div>
 				</div>
+				<%
+				if(session.getAttribute("SS_ADMIN_CODE")==null){
+				%>
 				<div class="col-lg-5  col-md-6 col-sm-6">
 					<div class="single-footer-widget">
-						<h6>Newsletter</h6>
-						<p>Stay update with our latest</p>
+						<h6>관리</h6>
+						<p>코드를 입력하세요.</p>
 						<div class="" id="mc_embed_signup">
-							<form target="_blank" novalidate="true"
-								action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
-								method="get" class="form-inline">
-								<input class="form-control" name="EMAIL"
-									placeholder="Email Address" onfocus="this.placeholder = ''"
-									onblur="this.placeholder = 'Email Address'" required=""
-									type="email">
-								<button class="click-btn btn btn-default">
+							<form target="_blank" action="/AdminCheck.do" method="post" class="form-inline">
+								<input class="form-control" id="code" name="admin_code" placeholder="Access Code" type="password">
+								<button class="click-btn btn btn-default" type="submit" id="code_check" formtarget="_self">
 									<i class="lnr lnr-arrow-right" aria-hidden="true"></i>
-								</button>
-								<div style="position: absolute; left: -5000px;">
-									<input name="b_36c4fd991d266f23781ded980_aefe40901a"
-										tabindex="-1" value="" type="text">
-								</div>
-								<div class="info"></div>
+								</button>	
+								<script type="text/javascript">
+									$(function(){
+										$('#code_check').click(function(){
+											if($('#code').val()==""){
+												alert("권한이 없습니다.");
+												return false;
+											}
+										});
+									});
+								</script>							
+								
 							</form>
 						</div>
 					</div>
 				</div>
+				<%}else{ %>
+				<div class="col-lg-5  col-md-6 col-sm-6">
+					<div class="single-footer-widget">
+						<a href="/logOut.do"><h6>로그아웃</h6></a>						
+					</div>
+				</div>
+				<%} %>
 				<div class="col-lg-2 col-md-6 col-sm-6 social-widget">
 					<div class="single-footer-widget">
 						<h6>Follow Us</h6>
