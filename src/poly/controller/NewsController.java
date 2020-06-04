@@ -28,26 +28,27 @@ public class NewsController {
 
 	@Resource(name = "NewsService")
 	private INewsService newsService;
-	
+
 	@Resource(name = "AdminService")
 	private IAdminService adminService;
 
 	// 메인화면 request
 	@RequestMapping(value = "Main")
-	public String Main(HttpSession session,HttpServletRequest request,  Model model) {
+	public String Main(HttpSession session, HttpServletRequest request, Model model) throws Exception {
 		log.info(this.getClass());
-		
-		if(session.getAttribute("SS_ADMIN_CODE")!=null) {
+
+		if (session.getAttribute("SS_ADMIN_CODE") != null) {
 			List<NewsTitleDTO> nList = new ArrayList<NewsTitleDTO>();
-			try {
-				nList = newsService.getTop50();
-				model.addAttribute("nList", nList);
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-			}
-			
-		}		
+
+			nList = newsService.getTop50();
+			model.addAttribute("nList", nList);
+		}
+		List<NewsDTO> rList = newsService.getNews();
+
+		if (rList == null) {
+			rList = new ArrayList<NewsDTO>();
+		}
+		model.addAttribute("rList", rList);
 
 		return "/Project/Main";
 	}
@@ -58,6 +59,14 @@ public class NewsController {
 
 		return "/Project/WordCloudTest";
 	}
+	
+	@RequestMapping(value = "ModalTest")
+	public String ModalTest() {
+		log.info(this.getClass());
+
+		return "/Project/ModalTest";
+	}
+
 	@RequestMapping(value = "WordCloud2")
 	public String WordCloud2() {
 		log.info(this.getClass());
@@ -77,7 +86,7 @@ public class NewsController {
 
 		return "success";
 	}
-	
+
 	@RequestMapping(value = "project/TestTitleCollection")
 	@ResponseBody
 	public String TestTitleCollection(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -114,110 +123,107 @@ public class NewsController {
 
 		return rList;
 	}
-	
+
 	// 뉴스 데이터 가져오기
-		@RequestMapping(value = "project/getTop50")
-		@ResponseBody
-		public List<NewsTitleDTO> getTop50(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping(value = "project/getTop50")
+	@ResponseBody
+	public List<NewsTitleDTO> getTop50(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-			log.info(this.getClass().getName() + " .TestGetNews Start!");
+		log.info(this.getClass().getName() + " .TestGetNews Start!");
 
-			List<NewsTitleDTO> nList = newsService.getTop50();
+		List<NewsTitleDTO> nList = newsService.getTop50();
 
-			if (nList == null) {
-				nList = new ArrayList<NewsTitleDTO>();
-			}
-			log.info(this.getClass().getName() + " .TestGetNews End!");
-
-			return nList;
+		if (nList == null) {
+			nList = new ArrayList<NewsTitleDTO>();
 		}
-		@RequestMapping(value = "makecsv")
-		@ResponseBody
-		public String makecsv(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		log.info(this.getClass().getName() + " .TestGetNews End!");
 
-			log.info(this.getClass().getName() + ".makecsv start!");
+		return nList;
+	}
 
-			newsService.makeCsv();
-			
-			log.info(this.getClass().getName() + ".makecsv end!");		
-			
+	@RequestMapping(value = "makecsv")
+	@ResponseBody
+	public String makecsv(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-			return "success";
-		}
-		
-		@RequestMapping("/AdminCheck")
-		public String insertUserInfo(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model)
-				throws Exception {
+		log.info(this.getClass().getName() + ".makecsv start!");
 
-			log.info(this.getClass().getName() + ".AdminCheck start!");
-			
+		newsService.makeCsv();
 
-			AdminDTO pDTO = null;
+		log.info(this.getClass().getName() + ".makecsv end!");
 
-			try {
-				String admin_code = CmmUtil.nvl(request.getParameter("admin_code"));
-				
-				log.info("admin_code확인 : " + admin_code);
+		return "success";
+	}
 
-				pDTO = new AdminDTO();
-				
-				pDTO.setCode(EncryptUtil.encHashSHA256(admin_code));				
+	@RequestMapping("/AdminCheck")
+	public String insertUserInfo(HttpSession session, HttpServletRequest request, HttpServletResponse response,
+			Model model) throws Exception {
 
-				int res = adminService.AdminCheck(pDTO);
+		log.info(this.getClass().getName() + ".AdminCheck start!");
 
-				if (res == 1) {
-					model.addAttribute("msg", "인증 되었습니다.");
-					model.addAttribute("url", "/Main.do");
-					session.setAttribute("SS_ADMIN_CODE",pDTO.getCode());
-					
-					
-				} else {
-					model.addAttribute("msg", "권한이 없습니다.");
-					model.addAttribute("url", "/Main.do");
-				}
-			} catch (Exception e) {				
-				log.info(e.toString());
-				e.printStackTrace();
+		AdminDTO pDTO = null;
 
-			} 
+		try {
+			String admin_code = CmmUtil.nvl(request.getParameter("admin_code"));
 
-			return "redirect";
-		}
-		
-		@RequestMapping(value = "logOut")
-		public String logOutTry(HttpSession session, HttpServletRequest request, Model model) throws Exception {
-			request.getSession().removeAttribute("SS_ADMIN_CODE");			
-			log.info("세션 꺼짐");
-			model.addAttribute("msg", "로그아웃 되었습니다.");
-			model.addAttribute("url", "/Main.do");
+			log.info("admin_code확인 : " + admin_code);
 
-			return "redirect";
-		}
-		
-		@RequestMapping(value ="project/titleDelete")
-		public String titleDelete(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-			log.info(this.getClass().getName()+".titleDelete start");
-			
-			String title = request.getParameter("title");
-			
-			NewsTitleDTO nDTO = new NewsTitleDTO();
-			
-			nDTO.setTitle(title);			
-			
-			
-			int res = newsService.titleDelete(nDTO);
-			
-			if(res == 1) {
-				model.addAttribute("msg", "삭제 되었습니다.");
-				model.addAttribute("url", "/Main.do");				
-				newsService.makeCsv();
-				
-			}else {
-				model.addAttribute("msg", "실패하였습니다.");
+			pDTO = new AdminDTO();
+
+			pDTO.setCode(EncryptUtil.encHashSHA256(admin_code));
+
+			int res = adminService.AdminCheck(pDTO);
+
+			if (res == 1) {
+				model.addAttribute("msg", "인증 되었습니다.");
+				model.addAttribute("url", "/Main.do");
+				session.setAttribute("SS_ADMIN_CODE", pDTO.getCode());
+
+			} else {
+				model.addAttribute("msg", "권한이 없습니다.");
 				model.addAttribute("url", "/Main.do");
 			}
-			
-			return "redirect";
+		} catch (Exception e) {
+			log.info(e.toString());
+			e.printStackTrace();
+
 		}
+
+		return "redirect";
+	}
+
+	@RequestMapping(value = "logOut")
+	public String logOutTry(HttpSession session, HttpServletRequest request, Model model) throws Exception {
+		request.getSession().removeAttribute("SS_ADMIN_CODE");
+		log.info("세션 꺼짐");
+		model.addAttribute("msg", "로그아웃 되었습니다.");
+		model.addAttribute("url", "/Main.do");
+
+		return "redirect";
+	}
+
+	@RequestMapping(value = "project/titleDelete")
+	public String titleDelete(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		log.info(this.getClass().getName() + ".titleDelete start");
+
+		String title = request.getParameter("title");
+
+		NewsTitleDTO nDTO = new NewsTitleDTO();
+
+		nDTO.setTitle(title);
+
+		int res = newsService.titleDelete(nDTO);
+
+		if (res == 1) {
+			model.addAttribute("msg", "삭제 되었습니다.");
+			model.addAttribute("url", "/Main.do");
+			newsService.makeCsv();
+
+		} else {
+			model.addAttribute("msg", "실패하였습니다.");
+			model.addAttribute("url", "/Main.do");
+		}
+
+		return "redirect";
+	}
 
 }

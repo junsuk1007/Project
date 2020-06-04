@@ -1,26 +1,31 @@
+<%@page import="poly.dto.NewsDTO"%>
 <%@page import="poly.util.CmmUtil"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="poly.dto.NewsTitleDTO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%
-	List<NewsTitleDTO> nList = (List<NewsTitleDTO>)request.getAttribute("nList");
-	
-	if(nList == null){
+<%
+	List<NewsTitleDTO> nList = (List<NewsTitleDTO>) request.getAttribute("nList");
+	List<NewsDTO> rList = (List<NewsDTO>) request.getAttribute("rList");
+
+	if (nList == null) {
 		nList = new ArrayList<>();
+	} else if (rList == null) {
+		rList = new ArrayList<>();
 	}
+
 	NewsTitleDTO nDTO = new NewsTitleDTO();
-	%>
-	
+%>
+
 <!doctype html>
 <html>
 <head>
+
+
 <!-- Mobile Specific Meta -->
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<!-- Favicon-->
-<link rel="shortcut icon" href="/theme/img/fav.png">
 <!-- Author Meta -->
 <meta name="author" content="colorlib">
 <!-- Meta Description -->
@@ -31,6 +36,14 @@
 <meta charset="UTF-8">
 <!-- Site Title -->
 <title>Interior</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 
 <link
 	href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700"
@@ -40,14 +53,14 @@
     ============================================= -->
 <link rel="stylesheet" href="/theme/css/linearicons.css">
 <link rel="stylesheet" href="/theme/css/font-awesome.min.css">
-<link rel="stylesheet" href="/theme/css/bootstrap.css">
+<!-- <link rel="stylesheet" href="/theme/css/bootstrap.css"> -->
 <link rel="stylesheet" href="/theme/css/magnific-popup.css">
 <link rel="stylesheet" href="/theme/css/nice-select.css">
 <link rel="stylesheet" href="/theme/css/animate.min.css">
 <link rel="stylesheet" href="/theme/css/owl.carousel.css">
 <link rel="stylesheet" href="/theme/css/main.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
 <script src="http://d3js.org/d3.v4.min.js"></script>
 <script
 	src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"
@@ -108,10 +121,10 @@
 		</div>
 		<div class="container main-menu">
 			<div class="row align-items-center justify-content-between d-flex">
-				<div id="logo">
+				<!-- <div id="logo">
 					<a href="" style="color: white; font-size: 20px;"><i>FROM
 							WAY</i><br> <i>DOWNTOWN</i></a>
-				</div>
+				</div> -->
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
 						<li class="menu-active"><a href="#home">Home</a></li>
@@ -131,12 +144,11 @@
 	<!-- start banner Area -->
 	<div style="background-color: rgba(4, 9, 30, 0.7);">
 		<section class="banner-area relativ" id="home">
-			<div class="overlay"></div>
 			<div class="container">
 				<div
 					class="row fullscreen d-flex justify-content-center align-items-center">
 					<div
-						class="banner-content col-lg-9 col-md-12 justify-content-center ">
+						class="banner-content col-md-12 justify-content-center" style="margin-top:35%;">
 						<h1>
 							<i>FROM WAY DOWNTOWN</i> <br>
 						</h1>
@@ -153,36 +165,62 @@
 		<div class="container">
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-12 pb-40 header-text text-center">
-					<h1 class="pb-10" style="color: #777;">오늘의 핫 워드</h1>
-					<p class="" style="color: #777;">Who are in extremely love with
-						eco friendly system.</p>
+					<h1 class="pb-10" style="color: #777;">오늘의 핫 뉴스</h1>
+					<p class="" style="color: #777;">가장 많은 관심을 받은 뉴스입니다. 제목을 클릭 시 감정분석 결과를 확인할 수 있습니다.</p>
 				</div>
 			</div>
-			<div class="row text-white" style="align-items: center;justify-content: center;">
-				<div id="news_rank" style="text-align:center;"></div>
-
+			<div class="row text-white" style="align-items: center; justify-content: center;">
+				<div id="news_rank1" style="text-align: center;">
+				<%for(int i=0; i<10;i++) {%>
+				<h4><a data-toggle="modal" data-target="#exampleModal<%=i%>"><%=CmmUtil.nvl(rList.get(i).getTitle()) %></a></h4><br>
+				<%} %>
+				</div>
 			</div>
-		</div>
-	</section>
-	<hr>
-	<!-- End feature Area -->
-
-	<!-- Start testimonial Area -->
-	<section class="testimonial-area pt-120" id="window2">
-		<div class="container">
-			<div class="row d-flex justify-content-center">
-				<div class="menu-content col-lg-8">
-					<div class="title text-center">
-						<h1 class="mb-10" style="color: #777;">누적 핫 워드</h1>
-						<p>Who are in extremely love with eco friendly system.</p>
+		</div>		
+		
+		<%for(int i=0;i<10;i++){ %>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal<%=i %>" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">오피니언 마이닝 결과</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">&lt;<%=CmmUtil.nvl(rList.get(i).getTitle()) %>&gt;의 감정분석 결과는 ?입니다</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save
+							changes</button>
 					</div>
 				</div>
 			</div>
-
 		</div>
-	</section>
-	<!-- End testimonial Area -->
+		
+		<!-- 모달끝 -->
+		<%} %>
 
+	</section>
+
+	<hr>
+	<!-- End feature Area -->
+	
+	<section class="feature-area" id="window2" style="padding-top:120px;">
+		<div class="container">
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-12 pb-40 header-text text-center">
+					<h1 class="pb-10" style="color: #777;">누적 핫 워드</h1>
+					<p class="" style="color: #777;">농구기사에서 가장 많이 사용된 단어들을 보여줍니다.</p>
+				</div>
+			</div>			
+		</div>		
+	</section>
+	
 	<!-- Start callto-action Area -->
 	<section class="callto-action-area">
 		<div class="container">
@@ -239,9 +277,9 @@
 	</section>
 	<!-- End callto-action Area -->
 	<hr>
-				<%
-				if(session.getAttribute("SS_ADMIN_CODE")!=null){
-				%>
+	<%
+		if (session.getAttribute("SS_ADMIN_CODE") != null) {
+	%>
 	<section class="feature-area section-gap" id="window3">
 		<div class="container" style="text-align: -webkit-center;">
 			<div class="row d-flex justify-content-center">
@@ -250,24 +288,34 @@
 					<p class="" style="color: #777;">부적절한 단어를 삭제합니다.</p>
 				</div>
 			</div>
-			<div class="row" style="align-items: center;justify-content: center; display:grid;width:800px; height:400px;overflow:scroll;">				
-				<div class="row" style="width:750px;">
-                              <div class="col-lg-2 col-md-2 col-sm-2  lg-9-st">단어</div>
-                              <div class="col-lg-2 col-md-2 col-sm-2 lg-9-st">반복 횟수</div>
-                              <div class="col-lg-2 col-md-2 col-sm-2 lg-9-st"></div>                                                         
-                           </div> 
-                           <%for(NewsTitleDTO rDTO : nList){ %>
-                           <div class="row" style="width:750px;">
-                              <div class="col-lg-2 col-md-2 col-sm-2  lg-9-st"><%=CmmUtil.nvl(rDTO.getTitle()) %></div>
-                              <div class="col-lg-2 col-md-2 col-sm-2 lg-9-st"><%=rDTO.getRepeat()%></div>
-                              <div class="col-lg-2 col-md-2 col-sm-2 lg-9-st"><a href="/project/titleDelete.do?title=<%=CmmUtil.nvl(rDTO.getTitle())%>">삭제</a></div>                                                         
-                           </div> 
-                           <%} %>  
-				</div>			
+			<div class="row"
+				style="align-items: center; justify-content: center; display: grid; width: 800px; height: 400px; overflow: scroll;">
+				<div class="row" style="width: 750px;">
+					<div class="col-lg-2 col-md-2 col-sm-2  lg-9-st">단어</div>
+					<div class="col-lg-2 col-md-2 col-sm-2 lg-9-st">반복 횟수</div>
+					<div class="col-lg-2 col-md-2 col-sm-2 lg-9-st"></div>
+				</div>
+				<%
+					for (NewsTitleDTO rDTO : nList) {
+				%>
+				<div class="row" style="width: 750px;">
+					<div class="col-lg-2 col-md-2 col-sm-2  lg-9-st"><%=CmmUtil.nvl(rDTO.getTitle())%></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 lg-9-st"><%=rDTO.getRepeat()%></div>
+					<div class="col-lg-2 col-md-2 col-sm-2 lg-9-st">
+						<a
+							href="/project/titleDelete.do?title=<%=CmmUtil.nvl(rDTO.getTitle())%>">삭제</a>
+					</div>
+				</div>
+				<%
+					}
+				%>
+			</div>
 		</div>
 	</section>
 	<hr>
-	<%} %>
+	<%
+		}
+	%>
 
 	<!-- start footer Area -->
 	<footer class="footer-area section-gap">
@@ -291,18 +339,21 @@
 					</div>
 				</div>
 				<%
-				if(session.getAttribute("SS_ADMIN_CODE")==null){
+					if (session.getAttribute("SS_ADMIN_CODE") == null) {
 				%>
 				<div class="col-lg-5  col-md-6 col-sm-6">
 					<div class="single-footer-widget">
 						<h6>관리</h6>
 						<p>코드를 입력하세요.</p>
 						<div class="" id="mc_embed_signup">
-							<form target="_blank" action="/AdminCheck.do" method="post" class="form-inline">
-								<input class="form-control" id="code" name="admin_code" placeholder="Access Code" type="password">
-								<button class="click-btn btn btn-default" type="submit" id="code_check" formtarget="_self">
+							<form target="_blank" action="/AdminCheck.do" method="post"
+								class="form-inline">
+								<input class="form-control" id="code" name="admin_code"
+									placeholder="Access Code" type="password">
+								<button class="click-btn btn btn-default" type="submit"
+									id="code_check" formtarget="_self">
 									<i class="lnr lnr-arrow-right" aria-hidden="true"></i>
-								</button>	
+								</button>
 								<script type="text/javascript">
 									$(function(){
 										$('#code_check').click(function(){
@@ -312,19 +363,23 @@
 											}
 										});
 									});
-								</script>							
-								
+								</script>
+
 							</form>
 						</div>
 					</div>
 				</div>
-				<%}else{ %>
+				<%
+					} else {
+				%>
 				<div class="col-lg-5  col-md-6 col-sm-6">
 					<div class="single-footer-widget">
-						<a href="/logOut.do"><h6>로그아웃</h6></a>						
+						<a href="/logOut.do"><h6>로그아웃</h6></a>
 					</div>
 				</div>
-				<%} %>
+				<%
+					}
+				%>
 				<div class="col-lg-2 col-md-6 col-sm-6 social-widget">
 					<div class="single-footer-widget">
 						<h6>Follow Us</h6>
@@ -339,21 +394,23 @@
 				</div>
 			</div>
 		</div>
+
+
 	</footer>
 	<!-- End footer Area -->
 
-	<script src="/theme/js/vendor/jquery-2.2.4.min.js"></script>
-	<script
+	<!-- <script src="/theme/js/vendor/jquery-2.2.4.min.js"></script> -->
+	<!-- <script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper./theme/js/1.12.9/umd/popper.min.js"
 		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-		crossorigin="anonymous"></script>
-	<script src="/theme/js/vendor/bootstrap.min.js"></script>
+		crossorigin="anonymous"></script> -->
+	
 	<script type="text/javascript"
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
 	<script src="/theme/js/easing.min.js"></script>
 	<script src="/theme/js/hoverIntent.js"></script>
 	<script src="/theme/js/superfish.min.js"></script>
-	<script src="/theme/js/jquery.ajaxchimp.min.js"></script>
+	<!-- <script src="/theme/js/jquery.ajaxchimp.min.js"></script> -->
 	<script src="/theme/js/jquery.magnific-popup.min.js"></script>
 	<script src="/theme/js/owl.carousel.min.js"></script>
 	<script src="/theme/js/jquery.nice-select.min.js"></script>

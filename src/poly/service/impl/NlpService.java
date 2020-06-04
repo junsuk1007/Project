@@ -236,9 +236,11 @@ public class NlpService implements INlpService {
 
 		int res = 0;
 
-		String text = CmmUtil.nvl(pDTO.getWord()).replaceAll("[^\\uAC00-\\uD7A3xfe0-9a-zA-Z\\\\s]", " ");
+		String text = CmmUtil.nvl(pDTO.getWord()).replaceAll("[^\\uAC00-\\uD7A3xfe0-9a-zA-Z\\\\s]", " ");		
 
 		text = text.replaceAll("\\s{2,}", " ");
+		
+		text = text.trim();
 
 		log.info("text : " + text);
 
