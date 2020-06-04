@@ -107,6 +107,16 @@
 		},100);
 	}
 </script>
+<style>
+#svg .cir{
+  stroke-dasharray: 628.3185307179587;
+  stroke-dashoffset:628.3185307179587;
+  transition: stroke-dashoffset 10s linear;
+}
+#svg {
+   transform: rotate(-90deg);
+}
+</style>
 </head>
 <body>
 	<header id="header" id="home2">
@@ -172,11 +182,20 @@
 			<div class="row text-white" style="align-items: center; justify-content: center;">
 				<div id="news_rank1" style="text-align: center;">
 				<%for(int i=0; i<10;i++) {%>
-				<h4><a data-toggle="modal" data-target="#exampleModal<%=i%>"><%=CmmUtil.nvl(rList.get(i).getTitle()) %></a></h4><br>
+				<h4><a data-toggle="modal" data-target="#exampleModal<%=i%>" class="abc">
+				<%if(i==0){ %>
+					<img alt="" src="/theme/img/gold.png"> &nbsp;
+				<% }else if(i==1){%>
+					<img alt="" src="/theme/img/silver.png"> &nbsp;
+				<%}else if(i==2){ %>
+					<img alt="" src="/theme/img/bronze.png"> &nbsp;
+				<%} %> 
+				 &lt;<%=i+1%>위&gt;<%=CmmUtil.nvl(rList.get(i).getTitle()) %></a></h4><br>
 				<%} %>
 				</div>
 			</div>
 		</div>		
+		
 		
 		<%for(int i=0;i<10;i++){ %>
 		<!-- Modal -->
@@ -192,6 +211,11 @@
 						</button>
 					</div>
 					<div class="modal-body">&lt;<%=CmmUtil.nvl(rList.get(i).getTitle()) %>&gt;의 감정분석 결과는 ?입니다</div>
+					<div>
+						<svg viewPort="0 0 320 320" width="320" height="320" id="svg" xmlns="http://www.w3.org/2000/svg">
+  							<circle class="cir" cx="160" cy="160" r="100" stroke="#000000" fill="none" stroke-width="10" stroke-linecap="round" class="cir"></circle>
+						</svg>
+					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-dismiss="modal">Close</button>
@@ -204,6 +228,21 @@
 		
 		<!-- 모달끝 -->
 		<%} %>
+		
+		<script>
+		$(".abc").click(function(){
+			console.log('abc');
+		    var val = 50;
+
+		    var $circle = $('#svg .cir');
+		    var r = $circle.attr('r');
+		    var per = ((100 - val) / 100) * Math.PI * r * 2;
+
+		    $circle.css({
+		      strokeDashoffset: per
+		    });
+		});
+		</script>
 
 	</section>
 
