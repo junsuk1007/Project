@@ -1,20 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>°¨Á¤ ºÐ¼®À» À§ÇÑ ¹®Àå ÀÔ·ÂÆû</title>
+<meta charset="UTF-8">
+<title>ê°ì • ë¶„ì„ì„ ìœ„í•œ ë¬¸ìž¥ ìž…ë ¥í¼</title>
 <body>
-	<h2>¿ÀÇÇ´Ï¾ð ¸¶ÀÌ´× - °¨Á¤ ºÐ¼®</h2>
+	<h2>ì˜¤í”¼ë‹ˆì–¸ ë§ˆì´ë‹ - ê°ì • ë¶„ì„</h2>
 	<hr/>
 	<form name="form1" method="post" action="/nlp/wordAnalysis.do">
 		<br />
-		ºÐ¼® ¸Þ½ÃÁö<br/>
+		ë¶„ì„ ë©”ì‹œì§€<br/>
 		<input type="text" name="text_message" style="width:400px"/>
 		<br />
 		<br />
-		<input type="submit" value="Àü¼Û" />
+		<input type="submit" value="ì „ì†¡" />
 	</form>
 </body>
 </html>
