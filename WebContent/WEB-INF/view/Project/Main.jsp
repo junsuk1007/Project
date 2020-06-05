@@ -36,12 +36,14 @@
 <meta charset="UTF-8">
 <!-- Site Title -->
 <title>Interior</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-  <script
+<script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
 
@@ -67,33 +69,31 @@
 	type="text/JavaScript">
 	</script>
 <script type="text/javascript">
-	$(window).on("load", function() {
+	
+/* 	$('#exampleModal0').click(function() {
 
 		//페이지 로딩 완료 후, 뉴스 순위가져오기 함수 실행함 
-		getNews();
-	});
+		getOpinion();
+	}); */
 
-	//뉴스 순위가져오기
-	function getNews() {
+	//오피니언마이닝 가져오기
+	function getOpinion(elem) {
 
 		//Ajax 호출
 		$.ajax({
-			url : "/project/getNews.do",
+			url : "/project/getOpinion.do",
 			type : "post",
 			dataType : "JSON",
 			contentType : "application/json; charset=UTF-8",
 			success : function(json) {
-
-				var news_rank = "";
-
-				for (var i = 0; i < json.length; i++) {
-					news_rank += ("<h4>"+json[i].seq + "위 | ");
-					/* news_rank += (json[i].collect_time + "수집일 | "); */
-					news_rank += (json[i].title + "</h4><br>");
-
-				}
-
-				$('#news_rank').html(news_rank);
+				var opn = json[elem]
+				console.log(json);									
+				
+				<% for (int i=0;i<10;i++){ %>
+				$('#optext<%=i%>').html(opn+"%");
+				<% } %>			
+				
+				d(opn, elem);				
 				
 			}
 		})
@@ -108,13 +108,14 @@
 	}
 </script>
 <style>
-#svg .cir{
-  stroke-dasharray: 628.3185307179587;
-  stroke-dashoffset:628.3185307179587;
-  transition: stroke-dashoffset 10s linear;
+#svg .cir {
+	stroke-dasharray: 628.3185307179587;
+	stroke-dashoffset: 628.3185307179587;
+	transition: stroke-dashoffset 1s linear;
 }
+
 #svg {
-   transform: rotate(-90deg);
+	transform: rotate(-90deg);
 }
 </style>
 </head>
@@ -157,8 +158,8 @@
 			<div class="container">
 				<div
 					class="row fullscreen d-flex justify-content-center align-items-center">
-					<div
-						class="banner-content col-md-12 justify-content-center" style="margin-top:35%;">
+					<div class="banner-content col-md-12 justify-content-center"
+						style="margin-top: 35%;">
 						<h1>
 							<i>FROM WAY DOWNTOWN</i> <br>
 						</h1>
@@ -176,63 +177,114 @@
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-12 pb-40 header-text text-center">
 					<h1 class="pb-10" style="color: #777;">오늘의 핫 뉴스</h1>
-					<p class="" style="color: #777;">가장 많은 관심을 받은 뉴스입니다. 제목을 클릭 시 감정분석 결과를 확인할 수 있습니다.</p>
+					<p class="" style="color: #777;">가장 많은 관심을 받은 뉴스입니다. 제목을 클릭 시
+						감정분석 결과를 확인할 수 있습니다.</p>
 				</div>
 			</div>
-			<div class="row text-white" style="align-items: center; justify-content: center;">
+			<div class="row text-white"
+				style="align-items: center; justify-content: center;">
 				<div id="news_rank1" style="text-align: center;">
-				<%for(int i=0; i<10;i++) {%>
-				<h4><a data-toggle="modal" data-target="#exampleModal<%=i%>" class="abc">
-				<%if(i==0){ %>
-					<img alt="" src="/theme/img/gold.png"> &nbsp;
-				<% }else if(i==1){%>
-					<img alt="" src="/theme/img/silver.png"> &nbsp;
-				<%}else if(i==2){ %>
-					<img alt="" src="/theme/img/bronze.png"> &nbsp;
-				<%} %> 
-				 &lt;<%=i+1%>위&gt;<%=CmmUtil.nvl(rList.get(i).getTitle()) %></a></h4><br>
-				<%} %>
+					<%
+						for (int i = 0; i < 10; i++) {
+					%>
+					<h4>					
+						<a data-toggle="modal" data-target="#exampleModal<%=i%>" class="abc" onclick="getOp(<%=i %>)">
+							 <%	if (i == 0) { %>
+							  <img alt="" src="/theme/img/gold.png"> &nbsp; 
+							  <%} else if (i == 1) { %>
+							   <img alt="" src="/theme/img/silver.png"> &nbsp; 
+							  <% } else if (i == 2) { %>
+							   <img alt="" src="/theme/img/bronze.png"> &nbsp;
+							    <% } %>
+							     &lt;<%=i + 1%>위&gt;<%=CmmUtil.nvl(rList.get(i).getTitle())%></a>
+					</h4>
+					<br>
+					<%
+						}
+					%>
 				</div>
 			</div>
-		</div>		
-		
-		
-		<%for(int i=0;i<10;i++){ %>
+		</div>
+
+
+		<%
+			for (int i = 0; i < 10; i++) {
+		%>
 		<!-- Modal -->
-		<div class="modal fade" id="exampleModal<%=i %>" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade MODAL<%=i%>" id="exampleModal<%=i%>" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">오피니언 마이닝 결과</h5>
 						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
+							aria-label="Close" onclick="zero()">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">&lt;<%=CmmUtil.nvl(rList.get(i).getTitle()) %>&gt;의 감정분석 결과는 ?입니다</div>
-					<div>
-						<svg viewPort="0 0 320 320" width="320" height="320" id="svg" xmlns="http://www.w3.org/2000/svg">
-  							<circle class="cir" cx="160" cy="160" r="100" stroke="#000000" fill="none" stroke-width="10" stroke-linecap="round" class="cir"></circle>
+					<div class="modal-body">
+						&lt;<%=CmmUtil.nvl(rList.get(i).getTitle())%>&gt;<br>의 감정분석
+						결과입니다.<br>100%에 가까울 수록 긍정, 0%에 가까울수록 부정문이며 50%는 평서문입니다.
+					</div>
+					<div style="text-align: center;" >
+						<svg viewPort="0 0 320 320" width="320" height="320" id="svg"
+							xmlns="http://www.w3.org/2000/svg">
+  							<circle class="cir" cx="160" cy="160" r="100" 
+								fill="none" stroke-width="10" stroke-linecap="round" id="cir" />
+  							<text class="tex1" x="50%" y="57%" text-anchor="middle"
+								 font-size="60px"
+								style="transform: rotate(90deg);transform-origin: center;" id="optext<%=i%>"></text>
+  							
 						</svg>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save
-							changes</button>
+							data-dismiss="modal" onclick="zero()">Close</button>						
 					</div>
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- 모달끝 -->
-		<%} %>
-		
+		<%
+			}
+		%>
+
 		<script>
-		$(".abc").click(function(){
+		
+		 function getOp(elem) {
+			setTimeout(function() {
+				getOpinion(elem);
+				}, 100);
+		}
+		
+		function d(opn, idx){
 			console.log('abc');
-		    var val = 50;
+		    var val = opn;
+		    console.log(document.getElementsByClassName('cir')[idx]);
+		    if (val == 1){
+		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#000000");
+		    	$('.tex1').attr("fill","#000000");		    	
+		    }else if(val == 15){
+		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#ff5c2b");
+		    	$('.tex1').attr("fill","#ff5c2b");		    	
+		    }else if(val == 40){
+		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#ffca2b");
+		    	$('.tex1').attr("fill","#ffca2b");	
+		    }else if(val ==50){
+		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#fcff5c");
+		    	$('.tex1').attr("fill","#fcff5c");	
+		    }	    
+		    else if(val == 60){
+		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#90e072");
+		    	$('.tex1').attr("fill","#90e072");	
+		    }else if(val ==75){
+		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#5cfffa");
+		    	$('.tex1').attr("fill","#5cfffa2");	
+		    }else{
+		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#3b96ff");
+		    	$('.tex1').attr("fill","#3b96ff");	
+		    }
 
 		    var $circle = $('#svg .cir');
 		    var r = $circle.attr('r');
@@ -241,25 +293,35 @@
 		    $circle.css({
 		      strokeDashoffset: per
 		    });
-		});
+		}
+		
+		function zero(elem){
+			$('#cir').removeAttr("stroke");
+	    	$('.tex1').removeAttr("fill")	
+			var $circle = $('#svg .cir');
+		    $circle.css({
+		      strokeDashoffset: 628.3185307179587
+		      
+		    });
+		}
 		</script>
 
 	</section>
 
 	<hr>
 	<!-- End feature Area -->
-	
-	<section class="feature-area" id="window2" style="padding-top:120px;">
+
+	<section class="feature-area" id="window2" style="padding-top: 120px;">
 		<div class="container">
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-12 pb-40 header-text text-center">
 					<h1 class="pb-10" style="color: #777;">누적 핫 워드</h1>
 					<p class="" style="color: #777;">농구기사에서 가장 많이 사용된 단어들을 보여줍니다.</p>
 				</div>
-			</div>			
-		</div>		
+			</div>
+		</div>
 	</section>
-	
+
 	<!-- Start callto-action Area -->
 	<section class="callto-action-area">
 		<div class="container">
@@ -443,7 +505,7 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper./theme/js/1.12.9/umd/popper.min.js"
 		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
 		crossorigin="anonymous"></script> -->
-	
+
 	<script type="text/javascript"
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
 	<script src="/theme/js/easing.min.js"></script>

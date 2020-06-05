@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import poly.dto.AdminDTO;
 import poly.dto.NewsDTO;
 import poly.dto.NewsTitleDTO;
+import poly.dto.NlpDTO;
 import poly.service.IAdminService;
 import poly.service.INewsService;
+import poly.service.INlpService;
 import poly.util.CmmUtil;
 import poly.util.EncryptUtil;
 
@@ -31,6 +33,9 @@ public class NewsController {
 
 	@Resource(name = "AdminService")
 	private IAdminService adminService;
+
+	@Resource(name = "NlpService")
+	private INlpService nlpService;
 
 	// 메인화면 request
 	@RequestMapping(value = "Main")
@@ -48,9 +53,65 @@ public class NewsController {
 		if (rList == null) {
 			rList = new ArrayList<NewsDTO>();
 		}
+
 		model.addAttribute("rList", rList);
 
 		return "/Project/Main";
+	}
+
+	// 오피니언 마이닝
+	@RequestMapping(value = "project/getOpinion")
+	@ResponseBody
+	public List<Integer> getOpinion(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		log.info(this.getClass().getName() + " .getOpinion Start!");
+
+		List<NewsDTO> rList = newsService.getNews();
+
+		if (rList == null) {
+			rList = new ArrayList<NewsDTO>();
+		}
+
+		List<Integer> pList = new ArrayList<>();
+
+		for (int i = 0; i < rList.size(); i++) {
+			String text_message = CmmUtil.nvl(rList.get(i).getTitle());
+
+			log.info("test_Message : " + text_message);
+
+			NlpDTO pDTO = new NlpDTO();
+
+			pDTO.setWord(text_message);
+
+			int point = nlpService.preProcessWordAnalysisForMind(pDTO);
+
+			// point 가 -4보다 작은경우
+			if (point < -4) {
+				point = 1;
+				// point 가 -4부터 -2사이인 경우
+			} else if (point > -4 && point < -2) {
+				point = 15;
+				// point 가 -2부터 0사이인 경우
+			} else if (point < 0 && point > -2) {
+				point = 40;
+				// point가 0인경우
+			} else if (point == 0) {
+				point = 50;
+				// 0 ~2미만
+			} else if (point > 0 && point < 3) {
+				point = 60;
+				// 2~4미만
+			} else if (point > 3 && point < 4) {
+				point = 75;
+				// 4이상
+			} else {
+				point = 95;
+			}
+
+			pList.add(point);
+		}
+
+		return pList;
 	}
 
 	@RequestMapping(value = "WordCloudTest")
@@ -59,7 +120,7 @@ public class NewsController {
 
 		return "/Project/WordCloudTest";
 	}
-	
+
 	@RequestMapping(value = "ModalTest")
 	public String ModalTest() {
 		log.info(this.getClass());
