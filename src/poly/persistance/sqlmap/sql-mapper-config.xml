@@ -3,12 +3,7 @@
 
 <configuration>
     <typeAliases>
-    	<!-- 사용할 DTO 등록  -->
-		<typeAlias type="poly.dto.NoticeDTO" alias="NoticeDTO"/>
-		<typeAlias type="poly.dto.UserInfoDTO" alias="UserInfoDTO"/>
-		<typeAlias type="poly.dto.MovieDTO" alias="MovieDTO"/>
-		<typeAlias type="poly.dto.FoodDTO" alias="FoodDTO"/>
-		<typeAlias type="poly.dto.OcrDTO" alias="OcrDTO"/>
+    	<!-- 사용할 DTO 등록  -->	
 		<typeAlias type="poly.dto.NlpDTO" alias="NlpDTO"/>
 		<typeAlias type="poly.dto.NlpDTO" alias="AdminDTO"/>
     </typeAliases>

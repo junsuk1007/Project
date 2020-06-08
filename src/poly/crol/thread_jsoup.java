@@ -11,9 +11,8 @@ public class thread_jsoup extends Thread {
 	{
 		try 
 		{
-/////////////////////////////////////////////////////////////////////////////////// 뉴스크롤링 예시
+/////////////////////////////////////////////////////////////////////////////////// 뉴스크롤링 예시			
 			
-			hash_title ha = new hash_title();
 			String url = "https://sports.news.naver.com/basketball/news/index.nhn?isphoto=N";
 			
 			Document doc = Jsoup.connect(url).header("Accept", "text/html, application/xhtml+xml,*/*").header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko")
