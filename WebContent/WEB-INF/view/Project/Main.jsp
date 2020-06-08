@@ -87,7 +87,6 @@
 			contentType : "application/json; charset=UTF-8",
 			success : function(json) {
 				var opn = json[elem]
-				console.log(json);									
 				
 				<% for (int i=0;i<10;i++){ %>
 				$('#optext<%=i%>').html(opn+"%");
@@ -188,7 +187,7 @@
 						for (int i = 0; i < 10; i++) {
 					%>
 					<h4>					
-						<a data-toggle="modal" data-target="#exampleModal<%=i%>" class="abc" onclick="getOp(<%=i %>)">
+						<a data-toggle="modal" data-target="#exampleModal<%=i%>" class="abc" onclick="getOp(<%=i %>)" style="cursor:pointer;">
 							 <%	if (i == 0) { %>
 							  <img alt="" src="/theme/img/gold.png"> &nbsp; 
 							  <%} else if (i == 1) { %>
@@ -216,7 +215,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">오피니언 마이닝 결과</h5>
+						<h5 class="modal-title" id="exampleModalLabel">감정분석 결과</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close" onclick="zero()">
 							<span aria-hidden="true">&times;</span>
@@ -259,29 +258,35 @@
 		}
 		
 		function d(opn, idx){
-			console.log('abc');
+			
 		    var val = opn;
-		    console.log(document.getElementsByClassName('cir')[idx]);
 		    if (val == 1){
+		    	//검정
 		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#000000");
 		    	$('.tex1').attr("fill","#000000");		    	
 		    }else if(val == 15){
+		    	//빨강
 		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#ff5c2b");
 		    	$('.tex1').attr("fill","#ff5c2b");		    	
 		    }else if(val == 40){
+		    	//주황
 		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#ffca2b");
 		    	$('.tex1').attr("fill","#ffca2b");	
 		    }else if(val ==50){
+		    	//노랑
 		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#fcff5c");
 		    	$('.tex1').attr("fill","#fcff5c");	
 		    }	    
 		    else if(val == 60){
+		    	//연두
 		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#90e072");
 		    	$('.tex1').attr("fill","#90e072");	
 		    }else if(val ==75){
+		    	//하늘
 		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#5cfffa");
 		    	$('.tex1').attr("fill","#5cfffa2");	
 		    }else{
+		    	//파랑
 		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#3b96ff");
 		    	$('.tex1').attr("fill","#3b96ff");	
 		    }
