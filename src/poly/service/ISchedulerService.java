@@ -1,4 +1,4 @@
-package poly.service.impl;
+package poly.service;
 
 public interface ISchedulerService {
 

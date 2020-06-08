@@ -302,10 +302,7 @@ public class NlpService implements INlpService {
 
             List<NlpDTO> rList = NLP_DIC.get(StringUtil.getFirstWord(firstWord));
             log.info(rList.size());
-
-            if (rList == null) {
-                rList = new ArrayList<NlpDTO>();
-            }
+            
 
             Iterator<NlpDTO> it = rList.iterator();
 

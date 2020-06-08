@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import poly.service.INewsService;
+import poly.service.ISchedulerService;
 
 @Component
 @Service("SchedulerService")
