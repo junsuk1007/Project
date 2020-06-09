@@ -336,7 +336,7 @@
 						style="display: grid; align-content: center; justify-content: center;">
 
 						<script type="text/javascript">
-    var weight = 3,   // change me
+    var weight = 2.5,   // change me
         width = 960,
         height = 500;
 
@@ -344,7 +344,7 @@
     d3.csv("/theme/csv/wordcloud.csv", function(d) {
         return {
           text: d.word,
-          size: +d.freq*weight
+          size: +d.freq*weight          
         }
       },
       function(data) {
@@ -447,7 +447,7 @@
 				<%
 					if (session.getAttribute("SS_ADMIN_CODE") == null) {
 				%>
-				<div class="col-lg-5  col-md-6 col-sm-6">
+				<div class="col-lg-5  col-md-6 col-sm-6" style="float:right;">
 					<div class="single-footer-widget">
 						<h6>관리</h6>
 						<p>코드를 입력하세요.</p>
@@ -486,18 +486,7 @@
 				<%
 					}
 				%>
-				<div class="col-lg-2 col-md-6 col-sm-6 social-widget">
-					<div class="single-footer-widget">
-						<h6>Follow Us</h6>
-						<p>Let us be social</p>
-						<div class="footer-social d-flex align-items-center">
-							<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
-								class="fa fa-twitter"></i></a> <a href="#"><i
-								class="fa fa-dribbble"></i></a> <a href="#"><i
-								class="fa fa-behance"></i></a>
-						</div>
-					</div>
-				</div>
+				
 			</div>
 		</div>
 

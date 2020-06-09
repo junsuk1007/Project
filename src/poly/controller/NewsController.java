@@ -86,22 +86,22 @@ public class NewsController {
 			int point = nlpService.preProcessWordAnalysisForMind(pDTO);
 
 			// point 가 -4보다 작은경우
-			if (point < -4) {
+			if (point <= -4) {
 				point = 1;
 				// point 가 -4부터 -2사이인 경우
 			} else if (point > -4 && point < -2) {
 				point = 15;
 				// point 가 -2부터 0사이인 경우
-			} else if (point < 0 && point > -2) {
+			} else if (point >= -2 && point < 0) {
 				point = 40;
 				// point가 0인경우
 			} else if (point == 0) {
 				point = 50;
 				// 0 ~2미만
-			} else if (point > 0 && point < 3) {
+			} else if (point > 0 && point <= 3) {
 				point = 60;
 				// 2~4미만
-			} else if (point > 3 && point < 4) {
+			} else if (point > 3 && point <= 4) {
 				point = 75;
 				// 4이상
 			} else {
