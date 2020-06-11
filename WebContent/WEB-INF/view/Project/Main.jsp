@@ -35,7 +35,7 @@
 <!-- meta character set -->
 <meta charset="UTF-8">
 <!-- Site Title -->
-<title>Interior</title>
+<title>FROM WAY DOWNTOWN</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -158,7 +158,7 @@
 				<div
 					class="row fullscreen d-flex justify-content-center align-items-center">
 					<div class="banner-content col-md-12 justify-content-center"
-						style="margin-top: 35%;">
+						style="margin-top: 8%;">
 						<h1>
 							<i>FROM WAY DOWNTOWN</i> <br>
 						</h1>
