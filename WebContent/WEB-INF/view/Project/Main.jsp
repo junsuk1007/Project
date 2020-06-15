@@ -143,9 +143,6 @@
 								<li><a href="#window1" id="btn2">오늘의 핫 워드</a></li>
 								<li><a href="#window2" id="btn3">누적 핫 워드</a></li>
 							</ul></li>
-							<%if (session.getAttribute("SS_ADMIN_CODE") != null) { %>
-							<li class="menu-active"><a href="">관리자 추가/변경</a></li>
-							<%} %>
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->
