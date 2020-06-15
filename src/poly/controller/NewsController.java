@@ -225,10 +225,13 @@ public class NewsController {
 
 		try {
 			String admin_code = CmmUtil.nvl(request.getParameter("admin_code"));
+			String admin_name = CmmUtil.nvl(request.getParameter("admin_code"));
 
 			log.info("admin_code확인 : " + admin_code);
 
 			pDTO = new AdminDTO();
+			
+			pDTO.setName(admin_name);
 
 			pDTO.setCode(EncryptUtil.encHashSHA256(admin_code));
 

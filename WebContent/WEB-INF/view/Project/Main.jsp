@@ -143,6 +143,9 @@
 								<li><a href="#window1" id="btn2">오늘의 핫 워드</a></li>
 								<li><a href="#window2" id="btn3">누적 핫 워드</a></li>
 							</ul></li>
+							<%if (session.getAttribute("SS_ADMIN_CODE") != null) { %>
+							<li class="menu-active"><a href="">관리자 추가/변경</a></li>
+							<%} %>
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->
@@ -397,17 +400,17 @@
 			<div class="row"
 				style="align-items: center; justify-content: center; display: grid; width: 800px; height: 400px; overflow: scroll;">
 				<div class="row" style="width: 750px;">
-					<div class="col-lg-2 col-md-2 col-sm-2  lg-9-st">단어</div>
-					<div class="col-lg-2 col-md-2 col-sm-2 lg-9-st">반복 횟수</div>
-					<div class="col-lg-2 col-md-2 col-sm-2 lg-9-st"></div>
+					<div class="col-lg-4 col-md-4 col-sm-4  lg-9-st"><h4>단어</h4></div>
+					<div class="col-lg-4 col-md-4 col-sm-4 lg-9-st"><h4>반복 횟수</h4></div>
+					<div class="col-lg-4 col-md-4 col-sm-4 lg-9-st"></div>
 				</div>
 				<%
 					for (NewsTitleDTO rDTO : nList) {
 				%>
 				<div class="row" style="width: 750px;">
-					<div class="col-lg-2 col-md-2 col-sm-2  lg-9-st"><%=CmmUtil.nvl(rDTO.getTitle())%></div>
-					<div class="col-lg-2 col-md-2 col-sm-2 lg-9-st"><%=rDTO.getRepeat()%></div>
-					<div class="col-lg-2 col-md-2 col-sm-2 lg-9-st">
+					<div class="col-lg-4 col-md-4 col-sm-4  lg-9-st"><%=CmmUtil.nvl(rDTO.getTitle())%></div>
+					<div class="col-lg-4 col-md-4 col-sm-4 lg-9-st"><%=rDTO.getRepeat()%></div>
+					<div class="col-lg-4 col-md-4 col-sm-4 lg-9-st">
 						<a
 							href="/project/titleDelete.do?title=<%=CmmUtil.nvl(rDTO.getTitle())%>">삭제</a>
 					</div>
