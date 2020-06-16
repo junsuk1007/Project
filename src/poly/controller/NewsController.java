@@ -251,6 +251,7 @@ public class NewsController {
 		}
 
 		return "redirect";
+		
 	}
 
 	@RequestMapping(value = "logOut")
