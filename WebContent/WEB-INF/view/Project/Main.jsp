@@ -172,9 +172,9 @@
 	</div>
 
 	<section class="feature-area section-gap" id="window1">
-		<div class="container">
+		<div class="container" style="background-image:url('/theme/img/michael-jordan.png'); background-size:contain; background-repeat:no-repeat; background-position-x:700px;">
 			<div class="row d-flex justify-content-center">
-				<div class="col-md-12 pb-40 header-text text-center">
+				<div class="col-md-12 pb-40 header-text text-center" style="text-align: inherit;">
 					<h1 class="pb-10" style="color: #777;">오늘의 핫 뉴스</h1>
 					<p class="" style="color: #777;">가장 많은 관심을 받은 뉴스입니다. 제목을 클릭 시
 						감정분석 결과를 확인할 수 있습니다.</p>
@@ -182,7 +182,7 @@
 			</div>
 			<div class="row text-white"
 				style="align-items: center; justify-content: center;">
-				<div id="news_rank1" style="text-align: center;">
+				<div id="news_rank1" style="text-align: inherit;">
 					<%
 						for (int i = 0; i < 10; i++) {
 					%>
@@ -202,6 +202,7 @@
 						}
 					%>
 				</div>
+				<!-- <div><img alt="조던" src="/theme/img/michael-jordan.png"></div> -->
 			</div>
 		</div>
 
@@ -211,7 +212,7 @@
 		%>
 		<!-- Modal -->
 		<div class="modal fade MODAL<%=i%>" id="exampleModal<%=i%>" tabindex="-1"
-			role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" aria-hidden="true">
+			role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -222,8 +223,8 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						&lt;<%=CmmUtil.nvl(rList.get(i).getTitle())%>&gt;<br>의 감정분석
-						결과입니다.<br>100%에 가까울 수록 긍정, 0%에 가까울수록 부정문이며 50%는 평서문입니다.
+						<h4>&lt;<%=CmmUtil.nvl(rList.get(i).getTitle())%>&gt;</h4><h4>의 감정분석
+						결과입니다.</h4><br>100%에 가까울 수록 긍정, 0%에 가까울수록 부정문이며 50%는 평서문입니다.
 					</div>
 					<div style="text-align: center;" >
 						<svg viewPort="0 0 320 320" width="320" height="320" id="svg"
@@ -284,7 +285,7 @@
 		    }else if(val ==75){
 		    	//하늘
 		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#5cfffa");
-		    	$('.tex1').attr("fill","#5cfffa2");	
+		    	$('.tex1').attr("fill","#5cfffa");	
 		    }else{
 		    	//파랑
 		    	document.getElementsByClassName('cir')[idx].setAttribute('stroke', "#3b96ff");
@@ -336,7 +337,7 @@
 						style="display: grid; align-content: center; justify-content: center;">
 
 						<script type="text/javascript">
-    var weight = 2.4,   // change me
+    var weight = 2.1,   // change me
         width = 960,
         height = 500;
 
