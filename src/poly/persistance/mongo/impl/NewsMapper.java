@@ -206,10 +206,12 @@ public class NewsMapper implements INewsMapper {
 			String title = CmmUtil.nvl((String) current.get("title")); // 제목
 			String Stringseq = CmmUtil.nvl(String.valueOf(current.get("seq"))); // 순위
 			int seq = Integer.parseInt(Stringseq);
+			String url = CmmUtil.nvl((String)current.get("url"));
 
 			rDTO.setCollect_time(collect_time);
 			rDTO.setSeq(seq);
 			rDTO.setTitle(title);
+			rDTO.setUrl(url);
 
 			rList.add(rDTO); // List에 데이터 저장
 

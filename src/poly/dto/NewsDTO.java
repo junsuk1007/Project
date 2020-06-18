@@ -5,6 +5,7 @@ public class NewsDTO {
 	private String collect_time; //수집시간
 	private String title; // 제목
 	private int seq;
+	private String url;
 	
 	public String getCollect_time() {
 		return collect_time;
@@ -24,5 +25,12 @@ public class NewsDTO {
 	public void setSeq(int seq) {
 		this.seq = seq;
 	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 	
 }

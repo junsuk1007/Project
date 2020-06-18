@@ -52,10 +52,13 @@ public class NewsService implements INewsService {
 
 		// System.out.println(doc);
 		Elements head = doc.select("a.title span");
+		Elements url2 = doc.select("a.title");
+		String Rurl = "https://sports.news.naver.com/";
 
 		/* for(int i = 0; i < head.size(); i++) */
 		for (int i = 0; i < 10; i++) {
 			Element item = head.get(i);
+			Element urll = url2.get(i);
 			System.out.println(item.text());
 
 			NewsDTO pDTO = new NewsDTO();
@@ -63,6 +66,7 @@ public class NewsService implements INewsService {
 			int seq = i + 1;
 			pDTO.setSeq(seq);
 			pDTO.setTitle(item.text());
+			pDTO.setUrl(Rurl+urll.getElementsByAttribute("href").attr("href").substring(11).replace("/read.", "."));
 
 			pList.add(pDTO);
 

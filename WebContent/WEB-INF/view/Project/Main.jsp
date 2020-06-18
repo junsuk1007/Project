@@ -238,6 +238,8 @@
 						</svg>
 					</div>
 					<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+							 onclick="window.open('<%=CmmUtil.nvl(rList.get(i).getUrl())%>')">뉴스 보러가기</button>	
 						<button type="button" class="btn btn-secondary"
 							data-dismiss="modal" onclick="zero()">Close</button>						
 					</div>
@@ -251,6 +253,7 @@
 		%>
 
 		<script>
+		
 		
 		 function getOp(elem) {
 			setTimeout(function() {
