@@ -11,7 +11,7 @@
 
 
 	<mongo:mongo-client id="mongo"
-		credentials="myUser:1234@MyDB" port="27017" host="192.168.136.130">
+		credentials="myUser:1234@MyDB" port="27017" host="15.165.197.115">
 	</mongo:mongo-client>
 
 	<mongo:db-factory id="mongoDbFactory"
