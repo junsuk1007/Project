@@ -357,7 +357,9 @@ public class NewsService implements INewsService {
 		for (int i = 0; i < nList.size(); i++) {
 			text = text + nList.get(i).getTitle();
 			text = text + ',';
-			if(nList.get(i).getRepeat()>=80) {
+			if(nList.get(i).getRepeat()>=120) {
+				text = text + 120;
+			}else if((nList.get(i).getRepeat()>=80) && (nList.get(i).getRepeat()<120)) {
 				text = text + 80;
 			}else {
 				text = text + nList.get(i).getRepeat();

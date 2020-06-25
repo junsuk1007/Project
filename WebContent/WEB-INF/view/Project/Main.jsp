@@ -340,7 +340,7 @@
 						style="display: grid; align-content: center; justify-content: center;">
 
 						<script type="text/javascript">
-    var weight = 2.1,   // change me
+    var weight = 1.5,   // change me
         width = 960,
         height = 500;
 
