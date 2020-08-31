@@ -18,7 +18,7 @@ text:hover {
   <div id="cloud" align="center"></div>
 
   <script type="text/javascript">
-    var weight = 3,   // change me
+    var weight = 1.5,   // change me
         width = 960,
         height = 500;
 
