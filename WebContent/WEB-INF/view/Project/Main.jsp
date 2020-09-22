@@ -88,9 +88,9 @@
 			success : function(json) {
 				var opn = json[elem]
 				
-				<% for (int i=0;i<10;i++){ %>
+				<%for (int i = 0; i < 10; i++) {%>
 				$('#optext<%=i%>').html(opn+"%");
-				<% } %>			
+				<%}%>			
 				
 				d(opn, elem);				
 				
@@ -143,6 +143,22 @@
 								<li><a href="#window1" id="btn2">오늘의 핫 워드</a></li>
 								<li><a href="#window2" id="btn3">누적 핫 워드</a></li>
 							</ul></li>
+						<li class="menu-active"><a href="#">자유게시판</a></li>
+						<%
+							if (session.getAttribute("user_name") == null) {
+						%>
+						<li class="menu-active"><a data-toggle="modal"
+							data-target="#joinModal" class="abc" onclick="getOp(this)"
+							style="cursor: pointer;">로그인</a></li>
+						<%
+							} else {
+						%>
+						<li class="menu-active"><a href="kakaologout.do">로그아웃</a></li>
+						<%
+							}
+						%>
+
+
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->
@@ -172,9 +188,11 @@
 	</div>
 
 	<section class="feature-area section-gap" id="window1">
-		<div class="container" style="background-image:url('/theme/img/michael-jordan.png'); background-size:contain; background-repeat:no-repeat; background-position-x:700px;">
+		<div class="container"
+			style="background-image: url('/theme/img/michael-jordan.png'); background-size: contain; background-repeat: no-repeat; background-position-x: 700px;">
 			<div class="row d-flex justify-content-center">
-				<div class="col-md-12 pb-40 header-text text-center" style="text-align: inherit;">
+				<div class="col-md-12 pb-40 header-text text-center"
+					style="text-align: inherit;">
 					<h1 class="pb-10" style="color: #777;">오늘의 핫 뉴스</h1>
 					<p class="" style="color: #777;">가장 많은 관심을 받은 뉴스입니다. 제목을 클릭 시
 						감정분석 결과를 확인할 수 있습니다.</p>
@@ -186,16 +204,18 @@
 					<%
 						for (int i = 0; i < 10; i++) {
 					%>
-					<h4>					
-						<a data-toggle="modal" data-target="#exampleModal<%=i%>" class="abc" onclick="getOp(<%=i %>)" style="cursor:pointer;">
-							 <%	if (i == 0) { %>
-							  <img alt="" src="/theme/img/gold.png"> &nbsp; 
-							  <%} else if (i == 1) { %>
-							   <img alt="" src="/theme/img/silver.png"> &nbsp; 
-							  <% } else if (i == 2) { %>
-							   <img alt="" src="/theme/img/bronze.png"> &nbsp;
-							    <% } %>
-							     &lt;<%=i + 1%>위&gt;<%=CmmUtil.nvl(rList.get(i).getTitle())%></a>
+					<h4>
+						<a data-toggle="modal" data-target="#exampleModal<%=i%>"
+							class="abc" onclick="getOp(<%=i%>)" style="cursor: pointer;">
+							<%
+								if (i == 0) {
+							%> <img alt="" src="/theme/img/gold.png"> &nbsp; <%
+ 	} else if (i == 1) {
+ %> <img alt="" src="/theme/img/silver.png"> &nbsp; <%
+ 	} else if (i == 2) {
+ %> <img alt="" src="/theme/img/bronze.png"> &nbsp; <%
+ 	}
+ %> &lt;<%=i + 1%>위&gt;<%=CmmUtil.nvl(rList.get(i).getTitle())%></a>
 					</h4>
 					<br>
 					<%
@@ -211,8 +231,9 @@
 			for (int i = 0; i < 10; i++) {
 		%>
 		<!-- Modal -->
-		<div class="modal fade MODAL<%=i%>" id="exampleModal<%=i%>" tabindex="-1"
-			role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+		<div class="modal fade MODAL<%=i%>" id="exampleModal<%=i%>"
+			tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+			data-backdrop="static" data-keyboard="false" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -223,25 +244,61 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<h4>&lt;<%=CmmUtil.nvl(rList.get(i).getTitle())%>&gt;</h4><h4>의 감정분석
-						결과입니다.</h4><br>100%에 가까울 수록 긍정, 0%에 가까울수록 부정문이며 50%는 평서문입니다.
+						<h4>
+							&lt;<%=CmmUtil.nvl(rList.get(i).getTitle())%>&gt;
+						</h4>
+						<h4>의 감정분석 결과입니다.</h4>
+						<br>100%에 가까울 수록 긍정, 0%에 가까울수록 부정문이며 50%는 평서문입니다.
 					</div>
-					<div style="text-align: center;" >
+					<div style="text-align: center;">
 						<svg viewPort="0 0 320 320" width="320" height="320" id="svg"
 							xmlns="http://www.w3.org/2000/svg">
-  							<circle class="cir" cx="160" cy="160" r="100" 
-								fill="none" stroke-width="10" stroke-linecap="round" id="cir" />
+  							<circle class="cir" cx="160" cy="160" r="100" fill="none"
+								stroke-width="10" stroke-linecap="round" id="cir" />
   							<text class="tex1" x="50%" y="57%" text-anchor="middle"
-								 font-size="60px"
-								style="transform: rotate(90deg);transform-origin: center;" id="optext<%=i%>"></text>
+								font-size="60px"
+								style="transform: rotate(90deg);transform-origin: center;"
+								id="optext<%=i%>"></text>
   							
 						</svg>
 					</div>
 					<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-							 onclick="window.open('<%=CmmUtil.nvl(rList.get(i).getUrl())%>')">뉴스 보러가기</button>	
 						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal" onclick="zero()">Close</button>						
+							onclick="window.open('<%=CmmUtil.nvl(rList.get(i).getUrl())%>')">뉴스
+							보러가기</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal" onclick="zero()">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 모달끝 -->
+		<!-- Modal -->
+		<div class="modal fade" id="joinModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" data-backdrop="static"
+			data-keyboard="false" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">로그인</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" onclick="zero()">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+
+						<h4>카카오톡으로 서비스 이용 가능합니다.</h4>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=4e51a0fefd383df467af95c7a0bd75da&redirect_uri=http://localhost:8080/kakaologin.do&response_type=code'"
+							style="background-color: #FAE100; color: #3B1E1E; font-weight: bold">카카오톡
+							로그인</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal" onclick="zero()">Close</button>
 					</div>
 				</div>
 			</div>
@@ -320,6 +377,21 @@
 	<hr>
 	<!-- End feature Area -->
 
+	<section class="feature-area section-gap" id="window">
+		<div class="container" style="text-align: -webkit-center;">
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-12 pb-40 header-text text-center">
+					<h1 class="pb-10" style="color: #777;">실시간 채팅</h1>
+					<p class="" style="color: #777;">실시간 채팅</p>
+				</div>
+			</div>
+
+		</div>
+	</section>
+	<hr>
+
+
+
 	<section class="feature-area" id="window2" style="padding-top: 120px;">
 		<div class="container">
 			<div class="row d-flex justify-content-center">
@@ -340,7 +412,7 @@
 						style="display: grid; align-content: center; justify-content: center;">
 
 						<script type="text/javascript">
-    var weight = 1.5,   // change me
+    var weight = 1.3,   // change me
         width = 960,
         height = 500;
 
@@ -401,8 +473,12 @@
 			<div class="row"
 				style="align-items: center; justify-content: center; display: grid; width: 800px; height: 400px; overflow: scroll;">
 				<div class="row" style="width: 750px;">
-					<div class="col-lg-4 col-md-4 col-sm-4  lg-9-st"><h4>단어</h4></div>
-					<div class="col-lg-4 col-md-4 col-sm-4 lg-9-st"><h4>반복 횟수</h4></div>
+					<div class="col-lg-4 col-md-4 col-sm-4  lg-9-st">
+						<h4>단어</h4>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4 lg-9-st">
+						<h4>반복 횟수</h4>
+					</div>
 					<div class="col-lg-4 col-md-4 col-sm-4 lg-9-st"></div>
 				</div>
 				<%
@@ -451,7 +527,7 @@
 				<%
 					if (session.getAttribute("SS_ADMIN_CODE") == null) {
 				%>
-				<div class="col-lg-5  col-md-6 col-sm-6" style="float:right;">
+				<div class="col-lg-5  col-md-6 col-sm-6" style="float: right;">
 					<div class="single-footer-widget">
 						<h6>관리</h6>
 						<p>코드를 입력하세요.</p>
@@ -490,7 +566,7 @@
 				<%
 					}
 				%>
-				
+
 			</div>
 		</div>
 

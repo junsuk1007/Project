@@ -19,6 +19,13 @@
 
 
 	<dependencies>
+	<!-- JSON 형태의 데이터 생성 및 내용 읽기을 위한 라이브러리 다운로드 -->
+		<!-- -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20190722</version>
+		</dependency>
 
 		<!-- MySQL 접속을 위한 드라이버 외부라이브러리 -->
 		<dependency>
