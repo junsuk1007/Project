@@ -404,9 +404,15 @@
 					<p class="" style="color: #777;">욕설, 비속어, 타인을 비방하는 문구를 사용하시면 운영자가 임의로 삭제할 수 있습니다.</p>
 					<div>
 						<fieldset>
-							<div id="messageWindow"></div>
-							<br /> <input id="inputMessage" type="text" /> <input
+							<div id="messageWindow" style="border:2px solid black;display: block;    							
+    							height:400px;    						
+   								overflow-y:scroll;
+    							scroll-behavior:smooth;"></div>
+							<br /> 
+							
+							<input id="inputMessage" type="text" /> <input
 								type="submit" onclick="logincheck2()" value="전송" />
+								
 						</fieldset>
 					</div>
 				</div>
@@ -438,17 +444,19 @@
 				user_name = "익명";
 				
 				send();
+				$('#inputMessage').val('');
 				
 			}else{				
 				send();
+				$('#inputMessage').val('');
 			}
 		}
 		
 		
-		
-		
 		chat.on("s2c chat", function(data){
-			document.getElementById('messageWindow').innerHTML = "<div>" + data.from.name + " 님이 보낸 채팅 : " + data.msg + "</div>" + document.getElementById('messageWindow').innerHTML;
+			var time = new Date();
+			var timeStr = time.toLocaleTimeString();
+			document.getElementById('messageWindow').innerHTML = "<div>"+"[ "+timeStr+ " ] " + data.from.name + " 님이 보낸 채팅 : " + data.msg + "</div>" + "<br/>" + document.getElementById('messageWindow').innerHTML;
 		})
 		
 		
