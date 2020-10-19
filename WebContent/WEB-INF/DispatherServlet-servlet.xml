@@ -15,7 +15,9 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context.xsd
     http://www.springframework.org/schema/task
-    http://www.springframework.org/schema/task/spring-task.xsd">
+    http://www.springframework.org/schema/task/spring-task.xsd"
+    >
+   
 	<!-- 스케쥴러 어노테이션 -->
 	<task:scheduler id="jobScheduler" pool-size="10" />
 	<task:annotation-driven scheduler="jobScheduler" />
@@ -64,5 +66,6 @@
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
 		p:maxUploadSize="104857600" p:maxInMemorySize="104857600" />
+		
 
 </beans>

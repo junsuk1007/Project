@@ -8,11 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.User;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import poly.dto.AdminDTO;
 import poly.dto.NewsDTO;
@@ -54,7 +57,12 @@ public class NewsController {
 			rList = new ArrayList<NewsDTO>();
 		}
 
+		String user_name = (String) session.getAttribute("user_name");
+		String user_mail = (String) session.getAttribute("user_mail");
+		
 		model.addAttribute("rList", rList);
+		model.addAttribute("user_name", user_name);
+		model.addAttribute("user_mail",user_mail);
 
 		return "/Project/Main";
 	}
@@ -134,6 +142,8 @@ public class NewsController {
 
 		return "/Project/WordCloud2";
 	}
+	
+	
 
 	@RequestMapping(value = "project/collectNews")
 	@ResponseBody
@@ -167,6 +177,8 @@ public class NewsController {
 
 		return "/Project/getNewsTest";
 	}
+	
+	
 
 	// 뉴스 데이터 가져오기
 	@RequestMapping(value = "project/getNews")

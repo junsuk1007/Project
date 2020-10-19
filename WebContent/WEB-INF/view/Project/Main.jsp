@@ -8,6 +8,8 @@
 <%
 	List<NewsTitleDTO> nList = (List<NewsTitleDTO>) request.getAttribute("nList");
 	List<NewsDTO> rList = (List<NewsDTO>) request.getAttribute("rList");
+	String user_name = (String) request.getAttribute("user_name");
+	String user_mail = (String) request.getAttribute("user_mail");
 
 	if (nList == null) {
 		nList = new ArrayList<>();
@@ -44,6 +46,9 @@
 
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"></script>
+
 
 
 
@@ -135,6 +140,18 @@
 					<a href="" style="color: white; font-size: 20px;"><i>FROM
 							WAY</i><br> <i>DOWNTOWN</i></a>
 				</div> -->
+				<script>
+				function logincheck(){
+					const user_name = <%=user_name%>
+					if (user_name == null){
+						alert('로그인이 필요한 서비스입니다.');
+						return false;
+						
+					}else{
+						location.href('#');
+					}
+				}
+				</script>
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
 						<li class="menu-active"><a href="#home">Home</a></li>
@@ -143,7 +160,9 @@
 								<li><a href="#window1" id="btn2">오늘의 핫 워드</a></li>
 								<li><a href="#window2" id="btn3">누적 핫 워드</a></li>
 							</ul></li>
-						<li class="menu-active"><a href="#">자유게시판</a></li>
+						<li class="menu-active"><a href="javascript:void(0);"
+							onclick="logincheck();">자유게시판</a></li>
+
 						<%
 							if (session.getAttribute("user_name") == null) {
 						%>
@@ -382,11 +401,60 @@
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-12 pb-40 header-text text-center">
 					<h1 class="pb-10" style="color: #777;">실시간 채팅</h1>
-					<p class="" style="color: #777;">실시간 채팅</p>
+					<p class="" style="color: #777;">욕설, 비속어, 타인을 비방하는 문구를 사용하시면 운영자가 임의로 삭제할 수 있습니다.</p>
+					<div>
+						<fieldset>
+							<div id="messageWindow"></div>
+							<br /> <input id="inputMessage" type="text" /> <input
+								type="submit" onclick="logincheck2()" value="전송" />
+						</fieldset>
+					</div>
 				</div>
-			</div>
 
+			</div>
 		</div>
+
+		
+		<script>
+		var chat = io('http://localhost:3000/');
+		console.log(chat);
+		let user_name = "<%=user_name%>";
+		const user_mail = "<%=user_mail%>";
+		
+		function send() {			
+			
+			chat.emit("login", {
+			      name: user_name,
+			      userid: user_mail
+		    });
+			chat.emit("chat",{
+				  msg: $('#inputMessage').val()
+			});
+		}
+		
+		function logincheck2(){
+			
+			if (user_name == "null"){
+				user_name = "익명";
+				
+				send();
+				
+			}else{				
+				send();
+			}
+		}
+		
+		
+		
+		
+		chat.on("s2c chat", function(data){
+			document.getElementById('messageWindow').innerHTML = "<div>" + data.from.name + " 님이 보낸 채팅 : " + data.msg + "</div>" + document.getElementById('messageWindow').innerHTML;
+		})
+		
+		
+		
+	</script>
+
 	</section>
 	<hr>
 
