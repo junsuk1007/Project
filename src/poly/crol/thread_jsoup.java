@@ -13,19 +13,19 @@ public class thread_jsoup extends Thread {
 		{
 /////////////////////////////////////////////////////////////////////////////////// 뉴스크롤링 예시			
 			
-			String url = "https://sports.news.naver.com/basketball/news/index.nhn?isphoto=N";
+	//		String url = "https://sports.news.naver.com/basketball/news/index.nhn?isphoto=N";
 			
-			Document doc = Jsoup.connect(url).header("Accept", "text/html, application/xhtml+xml,*/*").header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko")
-					.header("Accept-Encoding", "gzip,delate").header("Accept-Language", "ko").header("Connection", "Keep-Alive").get();
+	//		Document doc = Jsoup.connect(url).header("Accept", "text/html, application/xhtml+xml,*/*").header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko")
+	//				.header("Accept-Encoding", "gzip,delate").header("Accept-Language", "ko").header("Connection", "Keep-Alive").get();
 			
 			//System.out.println(doc);
-			Elements head = doc.select("a.title span");
+	//		Elements head = doc.select("a.title span");
 			
-			for(int i = 0; i < head.size(); i++) {
-				Element item = head.get(i);
-				System.out.println(item.text());
-			}
-			System.out.println(head.get(0));			
+	//		for(int i = 0; i < head.size(); i++) {
+	//			Element item = head.get(i);
+	//			System.out.println(item.text());
+	//		}
+	//		System.out.println(head.get(0));			
 				
 //			String str_head = head.text();
 //			System.out.println(str_head);
@@ -38,23 +38,29 @@ public class thread_jsoup extends Thread {
 			
 			/////////////////////////////////////////////////////////////////////////////////// KBO 랭킹 크롤링
 			
+			
+			  String url2 = "https://sports.news.naver.com/basketball/schedule/index.nhn?year=2020&month=10&category=kbl";
+			  Document doc2 = Jsoup.connect(url2).get();
+			  
+			  Elements rowElements = doc2.
+			  select("div.sch_tb2 selected > table > tbody");
+			  
+			  for(Element row : rowElements) { Elements tdElements =
+			  row.getElementsByTag("td"); System.out.format("%d %s",
+			  Integer.valueOf(tdElements.get(0).text()), tdElements.get(1).text());
+			  System.out.println();
+			  
+				for(int i = 0; i < rowElements.size(); i++) {
+								Element item = rowElements.get(i);
+								System.out.println(item.text());
+							}
+			  }
+			  
+			  
+			  /////////////////////////////////////////////////////////////////////////////
+			  //// 블로그 크롤링
+			  
 			/*
-			 * String url2 = "https://www.koreabaseball.com/TeamRank/TeamRank.aspx";
-			 * Document doc2 = Jsoup.connect(url2).get();
-			 * 
-			 * Elements rowElements = doc2.
-			 * select("div#cphContents_cphContents_cphContents_udpRecord > table.tData > tbody > tr"
-			 * );
-			 * 
-			 * for(Element row : rowElements) { Elements tdElements =
-			 * row.getElementsByTag("td"); System.out.format("%d %s",
-			 * Integer.valueOf(tdElements.get(0).text()), tdElements.get(1).text());
-			 * System.out.println(); }
-			 * 
-			 * 
-			 * /////////////////////////////////////////////////////////////////////////////
-			 * //// 블로그 크롤링
-			 * 
 			 * String blog_url = "https://blog.naver.com/with_msip/221846679759"; Document
 			 * blog_doc = Jsoup.connect(blog_url).get(); Element iframeElement =
 			 * blog_doc.select("body").first().select("iframe[id=mainFrame]").first();
@@ -97,6 +103,7 @@ public class thread_jsoup extends Thread {
 			 * System.out.println(blog_body.text()); } } naver_url_page = naver_url_page +
 			 * 10; }
 			 */
+			 
 		}
 		catch(Exception e)
 		{

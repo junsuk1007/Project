@@ -17,13 +17,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.squareup.okhttp.Request;
+
 import poly.dto.AdminDTO;
 import poly.dto.NewsDTO;
 import poly.dto.NewsTitleDTO;
 import poly.dto.NlpDTO;
+import poly.dto.TeamDTO;
 import poly.service.IAdminService;
 import poly.service.INewsService;
 import poly.service.INlpService;
+import poly.service.ITeamService;
 import poly.util.CmmUtil;
 import poly.util.EncryptUtil;
 
@@ -39,6 +43,9 @@ public class NewsController {
 
 	@Resource(name = "NlpService")
 	private INlpService nlpService;
+	
+	@Resource(name = "TeamService")
+	private ITeamService teamService;
 
 	// 메인화면 request
 	@RequestMapping(value = "Main")
@@ -56,6 +63,8 @@ public class NewsController {
 		if (rList == null) {
 			rList = new ArrayList<NewsDTO>();
 		}
+		
+		String MVPTeam = teamService.getMVPTeam();
 
 		String user_name = (String) session.getAttribute("user_name");
 		String user_mail = (String) session.getAttribute("user_mail");
@@ -65,6 +74,33 @@ public class NewsController {
 		model.addAttribute("user_mail",user_mail);
 
 		return "/Project/Main";
+	}
+	
+	@RequestMapping(value = "likedTeam", method=RequestMethod.GET)
+	public String likedTeam(HttpServletRequest request, Model model) throws Exception {
+		log.info(this.getClass());	
+		 String teamName = request.getParameter("NBATeam");
+		 
+		 TeamDTO pDTO = new TeamDTO();
+		 
+		 pDTO.setTeamname(teamName);
+		 
+		 int res = teamService.SelectedTeam(pDTO);
+		 
+		 if(res == 1) {
+			 model.addAttribute("msg", "투표해주셔서 감사합니다.");
+			 model.addAttribute("url", "/Main.do"); 
+		 }else {
+			 model.addAttribute("msg", "오류입니다.");
+			 model.addAttribute("url", "/Main.do"); 
+		 }
+		 
+		 
+		 System.out.println("팀 :"+ teamName);
+		 
+		 
+
+		return "redirect";
 	}
 
 	// 오피니언 마이닝

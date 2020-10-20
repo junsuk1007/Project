@@ -5,6 +5,7 @@
     <typeAliases>
     	<!-- 사용할 DTO 등록  -->	
 		<typeAlias type="poly.dto.NlpDTO" alias="NlpDTO"/>
-		<typeAlias type="poly.dto.NlpDTO" alias="AdminDTO"/>
+		<typeAlias type="poly.dto.AdminDTO" alias="AdminDTO"/>
+		<typeAlias type="poly.dto.TeamDTO" alias="TeamDTO"/>
     </typeAliases>
 </configuration>

@@ -160,8 +160,9 @@
 								<li><a href="#window1" id="btn2">오늘의 핫 워드</a></li>
 								<li><a href="#window2" id="btn3">누적 핫 워드</a></li>
 							</ul></li>
-						<li class="menu-active"><a href="javascript:void(0);"
-							onclick="logincheck();">자유게시판</a></li>
+						<li class="menu-active"><a data-toggle="modal" 
+							data-target="#cheerModal" class="abc" onclick="getOp(this)"
+								style="cursor: pointer;">팀 응원하기</a></li>
 
 						<%
 							if (session.getAttribute("user_name") == null) {
@@ -293,6 +294,11 @@
 		</div>
 
 		<!-- 모달끝 -->
+		
+		<%
+			}
+		%>
+		
 		<!-- Modal -->
 		<div class="modal fade" id="joinModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" data-backdrop="static"
@@ -324,9 +330,170 @@
 		</div>
 
 		<!-- 모달끝 -->
-		<%
-			}
-		%>
+		
+		<!-- Modal -->
+		<div class="modal fade" id="cheerModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" data-backdrop="static"
+			data-keyboard="false" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">좋아하는 팀을 선택해주세요!</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" onclick="zero()">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+
+						<h4>자신이 응원하는 팀을 골라주세요.</h4>
+						
+						<form action="/likedTeam.do">
+						<table border="1" style="width:80%">
+						<thead style="text-align-last:center;">
+						<th>동부 컨퍼런스</th>
+						<th>서부 컨퍼런스</th>
+						</thead>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="bucks"/>  밀워키 벅스
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="lakers"/>  LA 레이커스
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="raptors"/>  토론토 랩터스
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="clipers"/>  LA 클리퍼스
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="celtics"/>  보스턴 셀틱스
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="nuggets"/>  덴버 너겟츠
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="pacers"/>  인디애나 페이서스
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="rockets"/>  휴스턴 로켓츠
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="heats"/>  마이애미 히트
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="thunder"/>  오클라호마시티 썬더
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="76ers"/>  필라델피아 76ers
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="jazz"/>  유타 재즈
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="nets"/>  브루클린 넷츠
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="mavericks"/>  댈러스 매버릭스
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="magic"/>  올랜도 매직
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="blazers"/>  포틀랜드 트레일 블레이저스
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="wizards"/>  워싱턴 위저즈
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="grizzlies"/>  멤피스 그리즐리스
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="hornets"/>  샬럿 호넷츠
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="suns"/>  피닉스 선즈
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="nicks"/>  뉴욕 닉스
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="spurs"/>  샌안토니오 스퍼스
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="pistons"/>  디트로이트 피스톤즈
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="kings"/>  새크라맨토 킹스
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="hawks"/>  애틀랜타 호크스
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="pelicans"/>  뉴올리언스 팰리컨스
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="cavaliers"/>  클리블랜드 캐벌리어스
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="wolves"/>  미네소타 팀버울브즈
+							</td>
+							</tr>
+							<tr>
+							<td>
+							<input type="radio" name="NBATeam" value="bulls"/>  시카고 불스
+							</td>
+							<td>
+							<input type="radio" name="NBATeam" value="warriors"/>  골든스테이트 워리어스
+							</td>
+							</tr>
+							
+							</table>	
+							
+							<input type="submit">			
+						
+						
+						</form>
+						
+					</div>
+
+					<div class="modal-footer">
+					
+						
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal" onclick="zero()">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 모달끝 -->
 
 		<script>
 		
