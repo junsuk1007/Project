@@ -6,4 +6,8 @@
 	<update id="SelectedTeam" parameterType="TeamDTO">
 		UPDATE SelectedTeam SET SELECTED = SELECTED+1 WHERE TEAMNAME = #{Teamname}
 	</update>
+	<select id="getMVPTeam" resultType="String">
+	SELECT TEAMNAME FROM SelectedTeam order by SELECTED DESC LIMIT 1
+	</select>
+	
 </mapper>

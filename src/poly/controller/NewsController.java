@@ -24,10 +24,13 @@ import poly.dto.NewsDTO;
 import poly.dto.NewsTitleDTO;
 import poly.dto.NlpDTO;
 import poly.dto.TeamDTO;
+import poly.dto.UserDTO;
 import poly.service.IAdminService;
 import poly.service.INewsService;
 import poly.service.INlpService;
 import poly.service.ITeamService;
+import poly.service.IUserService;
+import poly.service.impl.UserService;
 import poly.util.CmmUtil;
 import poly.util.EncryptUtil;
 
@@ -46,6 +49,9 @@ public class NewsController {
 	
 	@Resource(name = "TeamService")
 	private ITeamService teamService;
+	
+	@Resource(name = "UserService")
+	private IUserService userService;
 
 	// 메인화면 request
 	@RequestMapping(value = "Main")
@@ -72,33 +78,45 @@ public class NewsController {
 		model.addAttribute("rList", rList);
 		model.addAttribute("user_name", user_name);
 		model.addAttribute("user_mail",user_mail);
+		model.addAttribute("MVPTeam", MVPTeam);
 
 		return "/Project/Main";
 	}
 	
 	@RequestMapping(value = "likedTeam", method=RequestMethod.GET)
-	public String likedTeam(HttpServletRequest request, Model model) throws Exception {
+	public String likedTeam(HttpServletRequest request, Model model, HttpSession session) throws Exception {
 		log.info(this.getClass());	
 		 String teamName = request.getParameter("NBATeam");
+		 String user_name = (String) session.getAttribute("user_name");
 		 
 		 TeamDTO pDTO = new TeamDTO();
 		 
+		 UserDTO uDTO = new UserDTO();
+		 
 		 pDTO.setTeamname(teamName);
 		 
-		 int res = teamService.SelectedTeam(pDTO);
+		 uDTO.setUser_name(user_name);		 
 		 
-		 if(res == 1) {
-			 model.addAttribute("msg", "투표해주셔서 감사합니다.");
+		 
+		 int user_check = userService.CheckUser(uDTO);
+		 
+		 System.out.println("user_check : "+ user_check);
+		 
+		 if(user_check ==2) {
+			 model.addAttribute("msg", "투표는 계정당 한번만 가능합니다.");
 			 model.addAttribute("url", "/Main.do"); 
 		 }else {
-			 model.addAttribute("msg", "오류입니다.");
-			 model.addAttribute("url", "/Main.do"); 
+			 
+			 int res = teamService.SelectedTeam(pDTO);
+			 
+			 if(res == 1) {
+				 model.addAttribute("msg", "투표해주셔서 감사합니다.");
+				 model.addAttribute("url", "/Main.do"); 
+			 }else {
+				 model.addAttribute("msg", "오류입니다.");
+				 model.addAttribute("url", "/Main.do"); 
+			 }
 		 }
-		 
-		 
-		 System.out.println("팀 :"+ teamName);
-		 
-		 
 
 		return "redirect";
 	}

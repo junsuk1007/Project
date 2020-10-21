@@ -8,4 +8,6 @@ public interface ITeamMapper {
 
 	int SelectedTeam(TeamDTO pDTO) throws Exception;
 
+	String getMVPTeam() throws Exception;
+
 }

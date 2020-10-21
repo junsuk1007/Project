@@ -7,5 +7,6 @@
 		<typeAlias type="poly.dto.NlpDTO" alias="NlpDTO"/>
 		<typeAlias type="poly.dto.AdminDTO" alias="AdminDTO"/>
 		<typeAlias type="poly.dto.TeamDTO" alias="TeamDTO"/>
+		<typeAlias type="poly.dto.UserDTO" alias="UserDTO"/>
     </typeAliases>
 </configuration>

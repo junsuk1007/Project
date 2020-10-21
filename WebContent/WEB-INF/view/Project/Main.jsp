@@ -10,6 +10,7 @@
 	List<NewsDTO> rList = (List<NewsDTO>) request.getAttribute("rList");
 	String user_name = (String) request.getAttribute("user_name");
 	String user_mail = (String) request.getAttribute("user_mail");
+	String MVPTeam = (String) request.getAttribute("MVPTeam");
 
 	if (nList == null) {
 		nList = new ArrayList<>();
@@ -151,6 +152,7 @@
 						location.href('#');
 					}
 				}
+				
 				</script>
 				<nav id="nav-menu-container">
 					<ul class="nav-menu">
@@ -160,19 +162,21 @@
 								<li><a href="#window1" id="btn2">오늘의 핫 워드</a></li>
 								<li><a href="#window2" id="btn3">누적 핫 워드</a></li>
 							</ul></li>
-						<li class="menu-active"><a data-toggle="modal" 
-							data-target="#cheerModal" class="abc" onclick="getOp(this)"
-								style="cursor: pointer;">팀 응원하기</a></li>
+						
 
 						<%
 							if (session.getAttribute("user_name") == null) {
 						%>
+						<li class="menu-active"><a href="javascript:void(0);" onclick="logincheck();">팀 응원하기</a></li>
 						<li class="menu-active"><a data-toggle="modal"
 							data-target="#joinModal" class="abc" onclick="getOp(this)"
 							style="cursor: pointer;">로그인</a></li>
 						<%
 							} else {
 						%>
+						<li class="menu-active"><a data-toggle="modal" 
+							data-target="#cheerModal" class="abc" onclick="getOp(this)"
+								style="cursor: pointer;">팀 응원하기</a></li>
 						<li class="menu-active"><a href="kakaologout.do">로그아웃</a></li>
 						<%
 							}
@@ -476,10 +480,12 @@
 							
 							</table>	
 							
-							<input type="submit">			
+							<input type="submit" value="투표하기">			
 						
 						
 						</form>
+						<hr>
+						현재 가장 인기 있는팀은 "<%=MVPTeam%>" 입니다!
 						
 					</div>
 

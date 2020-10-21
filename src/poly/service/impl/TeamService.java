@@ -34,7 +34,9 @@ public class TeamService implements ITeamService {
 	@Override
 	public String getMVPTeam() throws Exception {
 		
-		return null;
+		String MVPTeam = teammapper.getMVPTeam();
+		
+		return MVPTeam;
 	}
 
 }
