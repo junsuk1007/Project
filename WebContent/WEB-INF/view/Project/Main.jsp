@@ -351,6 +351,7 @@
 					<div class="modal-body">
 
 						<h4>자신이 응원하는 팀을 골라주세요.</h4>
+						<br>
 						
 						<form action="/likedTeam.do">
 						<table border="1" style="width:80%">
@@ -479,6 +480,7 @@
 							</tr>
 							
 							</table>	
+							<br>
 							
 							<input type="submit" value="투표하기">			
 						

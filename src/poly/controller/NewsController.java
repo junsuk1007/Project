@@ -103,7 +103,7 @@ public class NewsController {
 		 System.out.println("user_check : "+ user_check);
 		 
 		 if(user_check ==2) {
-			 model.addAttribute("msg", "투표는 계정당 한번만 가능합니다.");
+			 model.addAttribute("msg", "투표는 계정당 최초 1회만 가능합니다!");
 			 model.addAttribute("url", "/Main.do"); 
 		 }else {
 			 
