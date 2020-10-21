@@ -8,16 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.User;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.squareup.okhttp.Request;
 
 import poly.dto.AdminDTO;
 import poly.dto.NewsDTO;
@@ -30,7 +27,6 @@ import poly.service.INewsService;
 import poly.service.INlpService;
 import poly.service.ITeamService;
 import poly.service.IUserService;
-import poly.service.impl.UserService;
 import poly.util.CmmUtil;
 import poly.util.EncryptUtil;
 
@@ -195,6 +191,13 @@ public class NewsController {
 		log.info(this.getClass());
 
 		return "/Project/WordCloud2";
+	}
+	
+	@RequestMapping(value = "basketballgame")
+	public String basketballgame() {
+		log.info(this.getClass());
+
+		return "/Project/basketballgame";
 	}
 	
 	

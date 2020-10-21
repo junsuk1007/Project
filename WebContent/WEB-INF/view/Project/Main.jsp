@@ -61,7 +61,6 @@
     ============================================= -->
 <link rel="stylesheet" href="/theme/css/linearicons.css">
 <link rel="stylesheet" href="/theme/css/font-awesome.min.css">
-<!-- <link rel="stylesheet" href="/theme/css/bootstrap.css"> -->
 <link rel="stylesheet" href="/theme/css/magnific-popup.css">
 <link rel="stylesheet" href="/theme/css/nice-select.css">
 <link rel="stylesheet" href="/theme/css/animate.min.css">
@@ -710,6 +709,29 @@
 	</section>
 	<!-- End callto-action Area -->
 	<hr>
+	
+	<!-- 농구게임 섹션 -->
+	
+	
+	<section class="feature-area section-gap" id="window">
+		<div class="container" style="text-align: -webkit-center;">
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-12 pb-40 header-text text-center">
+					<h1 class="pb-10" style="color: #777;">농구 미니 게임</h1>
+					
+					<iframe src="/basketballgame.do" style="width:100%; height:800px;"></iframe>
+				</div>
+
+			</div>
+		</div>
+		
+	</section>
+	<hr>
+	
+	
+	
+	
+	
 	<%
 		if (session.getAttribute("SS_ADMIN_CODE") != null) {
 	%>
@@ -825,18 +847,11 @@
 	</footer>
 	<!-- End footer Area -->
 
-	<!-- <script src="/theme/js/vendor/jquery-2.2.4.min.js"></script> -->
-	<!-- <script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper./theme/js/1.12.9/umd/popper.min.js"
-		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-		crossorigin="anonymous"></script> -->
-
 	<script type="text/javascript"
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
 	<script src="/theme/js/easing.min.js"></script>
 	<script src="/theme/js/hoverIntent.js"></script>
 	<script src="/theme/js/superfish.min.js"></script>
-	<!-- <script src="/theme/js/jquery.ajaxchimp.min.js"></script> -->
 	<script src="/theme/js/jquery.magnific-popup.min.js"></script>
 	<script src="/theme/js/owl.carousel.min.js"></script>
 	<script src="/theme/js/jquery.nice-select.min.js"></script>
