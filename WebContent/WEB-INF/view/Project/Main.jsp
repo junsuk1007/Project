@@ -360,7 +360,7 @@
 						</thead>
 							<tr>
 							<td>
-							<input type="radio" name="NBATeam" value="bucks"/>  밀워키 벅스
+							<input type="radio" name="NBATeam" value="bucks" required/>  밀워키 벅스
 							</td>
 							<td>
 							<input type="radio" name="NBATeam" value="lakers"/>  LA 레이커스
