@@ -574,8 +574,7 @@
 		<div class="container" style="text-align: -webkit-center;">
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-12 pb-40 header-text text-center">
-					<h1 class="pb-10" style="color: #777;">실시간 채팅</h1>
-					<p class="" style="color: #777;">욕설, 비속어, 타인을 비방하는 문구를 사용하시면 운영자가 임의로 삭제할 수 있습니다.</p>
+					<h1 class="pb-10" style="color: #777;">실시간 채팅</h1>					
 					<div>
 						<fieldset>
 							<div id="messageWindow" style="border:2px solid black;display: block;    							
@@ -584,8 +583,14 @@
     							scroll-behavior:smooth;"></div>
 							<br /> 
 							
-							<input id="inputMessage" type="text" /> <input
-								type="submit" onclick="logincheck2()" value="전송" />
+							<input id="inputMessage" type="text"  class="form-control" />
+							
+							<div class="form-group form-check">
+							<p class="" style="color: #777;">과도한 욕설, 비속어, 타인을 비방하는 문구를 사용하시면 명예회손,모욕죄 등에 따라 법적책임을 질 수 있습니다.</p>
+    <input type="checkbox" class="form-check-input" id="exampleCheck1" name ="exampleCheck1">    
+    <label class="form-check-label" for="exampleCheck1">동의합니다.</label>
+  </div>
+							 <input	type="submit" onclick="checkedbox()" value="메시지 전송하기" class="btn btn-primary"/>								
 								
 						</fieldset>
 					</div>
@@ -610,6 +615,22 @@
 			chat.emit("chat",{
 				  msg: $('#inputMessage').val()
 			});
+		}
+		
+		function checkedbox() {
+			var text = $('#inputMessage').val();
+			var textLen = text.length;
+			
+			if(textLen < 1){
+				alert('메시지를 입력해주세요.');
+				return false;
+			}else if($("input:checkbox[id='exampleCheck1']").is(":checked") == false){
+				alert('채팅을 이용하시려면 해당 내용의 동의가 필요합니다.');
+				return false;
+				
+			}else {
+				logincheck2();
+			}
 		}
 		
 		function logincheck2(){
@@ -662,7 +683,7 @@
 						style="display: grid; align-content: center; justify-content: center;">
 
 						<script type="text/javascript">
-    var weight = 1.3,   // change me
+    var weight = 1.1,   // change me
         width = 960,
         height = 500;
 
